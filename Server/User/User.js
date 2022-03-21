@@ -86,9 +86,15 @@ class User
         }
         this.database.deleteUser(id)
             .then((val) => {
-                res.status(200).json({
+                if (val === true)
+                    res.status(200).json({
+                        status: 200,
+                        message: "Account deleted"
+                    });
+                else
+                res.status(400).json({
                     status: 200,
-                    message: "Account deleted"
+                    message: "Account doesn't exist"
                 });
             })
             .catch((err) => {
@@ -173,7 +179,7 @@ class User
             else {
                 res.status(200).json({
                     status: 200,
-                    message: "Déconnexion réussie"
+                    message: "Successful logout"
                 });
                 
             }

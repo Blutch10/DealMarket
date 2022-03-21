@@ -1,40 +1,15 @@
-const sqlite3 = require('sqlite3').verbose();
+﻿const Datastore = require('nedb');
 
-class Database
-{
+class Database {
 
-    /**
-     * Constructs the database object and opens the connection to the DB.
-     * 
-     * @param {String} path The path to the SQLite database file. 
-     */
-    constructor(path)
-    {
-        this.db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+    constructor() {
+        this.database = new Datastore({filename: './database.db', autoload: true, onload: (err) => {
             if (err)
-                console.log("Error occured during DB boot.");
-            else {
-                console.log("DB up and running !");
-                this.initialize();
-            }
-                
-        });
-    }
-
-
-    /**
-     * Initializes the DB by creating the tables if they don't exist.
-     */
-    initialize()
-    {
-        let initUser = `CREATE TABLE IF NOT EXISTS users (
-            username VARCHAR(30) UNIQUE NOT NULL,
-            firstname VARCHAR(30) NOT NULL,
-            lastname VARCHAR(30) NOT NULL,
-            email VARCHAR(50) NOT NULL,
-            password VARCHAR(500) NOT NULL
-        );`;
-        this.db.run(initUser, () => console.log("User table set"));
+                console.log(err.message);
+            else
+                console.log("Database up and running !");
+        }});
+        this.database.persistence.setAutocompactionInterval(60000); // Compacts the database each parameter milliseconds.
     }
 
 
@@ -49,38 +24,45 @@ class Database
      * 
      * @returns A promise which resolves in the new account's ID if successful and in the error otherwise.
      */
-    addUser(username, firstname, lastname, email, password)
-    {
+     addUser(username, firstname, lastname, email, password)
+     {
+        let nUser = {
+            username_: username,
+            firstname_: firstname,
+            lastname_: lastname,
+            email_: email,
+            password_: password
+        };
+
         return new Promise((resolve, reject) => {
-            let sql = `INSERT INTO users VALUES('${username}', '${firstname}', '${lastname}', '${email}', '${password}');`
-            this.db.run(sql, (err) => {
+            this.database.insert(nUser, (err, newDoc) => {
                 if (err)
                     reject(err.message);
-                resolve(this.lastID);
+                else
+                    resolve(newDoc._id)
             });
         });
-    }
+     }
 
 
-    /**
+     /**
      * Checks if the username given in parameter already exists.
      * 
      * @param {String} username The username to search.
      * 
-     * @returns A promise which resolves in the rowid corresponding to the username if it exists, in undefined if it doesn't exist and in error otherwise.
+     * @returns A promise which resolves in the _id corresponding to the username if it exists, in undefined if it doesn't exist and in error otherwise.
      */
     existUsername(username)
     {
         return new Promise((resolve, reject) => {
-            let sql = `SELECT rowid FROM users WHERE username = '${username}';`;
-            this.db.get(sql, (err, row) => {
+            this.database.find({username_: username}, (err, docs) => {
                 if (err)
                     reject(err.message);
-                else if (row)
-                    resolve(row.rowid);
-                else
+                else if (docs.length === 0)
                     resolve(undefined);
-            })
+                else
+                    resolve(docs[0]._id);
+            });
         });
     }
 
@@ -88,46 +70,48 @@ class Database
     /**
      * Deletes the user identified by username from the database.
      * 
-     * @param {int} id The rowid of the user to delete.
+     * @param {String} id The _id of the user to delete.
      * 
-     * @returns A promise which resolves in void if the deletion occured and in error otherwise.
+     * @returns A promise which resolves in true if the deletion occured, false if it didn't and in error otherwise.
      */
-    deleteUser(id)
-    {
+     deleteUser(id)
+     {
         return new Promise((resolve, reject) => {
-            let sql = `DELETE FROM users WHERE rowid = '${id}';`;
-            this.db.run(sql, (err) => {
+            this.database.remove({_id: id}, {}, (err, numRemoved) => {
                 if (err)
                     reject(err.message);
-                resolve();
+                else if (numRemoved === 1)
+                    resolve(true);
+                else
+                    resolve(false);
             });
         });
-    }
+     }
 
 
-    /**
+     /**
      * Checks whether the login credentials provided by the users are correct or not.
      * 
-     * @param {*} username The username for the account.
+     * @param {String} username The username for the account.
      * @param {String} password The hashed password value.
      * 
-     * @returns A promise which resolves in the rowid of the user if the login is correct, in undefined if incorrect and in error otherwise.
+     * @returns A promise which resolves in the _id of the user if the login is correct, in undefined if incorrect and in error otherwise.
      */
     checkLoginInformation(username, password)
     {
         // ToDo : Modifier pour prendre en compte BCrypt
         return new Promise((resolve, reject) => {
-            let sql = `SELECT rowid FROM users WHERE username = '${username}' AND password = '${password}';`;
-            this.db.get(sql, (err, row) => {
+            this.database.find({username_: username, password_: password}, (err, docs) => {
                 if (err)
                     reject(err.message);
-                else if (row)
-                    resolve(row.rowid);
-                else
+                else if (docs.length === 0)
                     resolve(undefined);
-            })
+                else
+                    resolve(docs[0]._id);
+            });
         });
     }
+
 }
 
 exports.default = Database;
