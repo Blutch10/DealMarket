@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './modules/home/home.component';
+import { PersonComponent } from './modules/person/person.component';
 import { AuthComponent } from './modules/auth/auth.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    PersonComponent,
     AuthComponent,
   ],
   imports: [
