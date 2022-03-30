@@ -10,13 +10,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from './core/service/login.service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormControl } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    SidebarComponent
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +26,6 @@ import { FormControl } from '@angular/forms';
     MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
-    FormControl
   ],
   providers: [],
   bootstrap: [AppComponent]

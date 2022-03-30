@@ -7,6 +7,7 @@ import { AuthTypes } from '../../infos/types/auth.types';
 import { LoginResponse } from '../../infos/interface/auth.interface';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { NgModule } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
