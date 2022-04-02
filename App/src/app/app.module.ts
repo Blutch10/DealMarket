@@ -13,12 +13,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { GraphComponent } from './modules/graph/graph.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PersonComponent,
     AuthComponent,
+    GraphComponent
   ],
   imports: [
     BrowserModule,
