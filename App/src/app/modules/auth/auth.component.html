@@ -1,56 +1,76 @@
 <div id="auth-root">
   <div id="auth-container">
-    <div style="align-self: flex-start;display: flex;align-items: center;justify-content: center">
-      <div style="width: 6px;height: 40px;background-color: darkorchid;transform: translate(-80px, -10px)"></div>
-      <h1>{{this.authType === 'REGISTER' ? 'Register' : 'Login'}}</h1>
+    
+    <div id="auth-container-inner1">
+      <h1 id="title">{{this.authType === 'REGISTER' ? 'Register' : 'Login'}}</h1>
     </div>
-    <mat-form-field [@inOutAnimation] *ngIf="authType === 'REGISTER'" style="width: 100%" appearance="outline">
-      <mat-label>Your Name</mat-label>
-      <input
-        matInput
-        [formControl]="name"
+
+    <mat-form-field class="form_input" appearance="outline">
+      <input matInput
+        [formControl]="username"
         type="text"
         autocomplete="off"
-        placeholder="Somebody"
+        placeholder="Username"
       />
     </mat-form-field>
-    <mat-form-field style="width: 100%" appearance="outline">
-      <mat-label>Email Address</mat-label>
-      <input
-        matInput
+
+    <mat-form-field class="form_input" [@inOutAnimation] *ngIf="authType === 'REGISTER'" appearance="outline">
+      <input matInput
+        [formControl]="lastname"
+        type="text"
+        autocomplete="off"
+        placeholder="Lastname"
+      />
+    </mat-form-field>
+      
+    <mat-form-field class="form_input" [@inOutAnimation] *ngIf="authType === 'REGISTER'" appearance="outline">
+      <input matInput
+        [formControl]="firstname"
+        type="text"
+        autocomplete="off"
+        placeholder="Firstname"
+      />
+    </mat-form-field>
+    
+    <mat-form-field class="form_input" [@inOutAnimation] *ngIf="authType === 'REGISTER'" appearance="outline">
+      <input matInput
         [formControl]="email"
         type="email"
         autocomplete="off"
-        placeholder="somebody@email.com"
+        placeholder="E-mail"
       />
     </mat-form-field>
-    <mat-form-field style="width: 100%" appearance="outline">
-      <mat-label>Secret Password</mat-label>
-      <input
-        matInput
+    
+    <mat-form-field class="form_input" appearance="outline">
+      <input matInput
         [formControl]="password"
         autocomplete="off"
         [type]="showPassword ? 'text' : 'password'"
-        placeholder="********"
+        placeholder="Password"
       />
-      <mat-icon matSuffix (click)="showPassword = !showPassword">
-        {{showPassword ? 'visibility_off' : 'visibility'}}
+      
+      <mat-icon id="visibility" matSuffix (click)="changeVisibility()">
+        {{showPassword ? "visibility_off" : "visibility"}}
       </mat-icon>
+      
       <mat-hint
-        *ngIf="password.value!==''">{{password.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}}</mat-hint>
+        *ngIf="password.value!=='' && authType!=='LOGIN'">{{password.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}} && 
+      </mat-hint>
     </mat-form-field>
-    <button
-      color="primary"
-      mat-flat-button
-      style="width: 100px"
-    >
+    
+    <button id="submit_button" color="primary" mat-flat-button>
       {{this.authType === 'REGISTER' ? 'Register' : 'Login'}}
     </button>
-    <div style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;margin-top: 50px">
-      <div>{{this.authType === 'REGISTER' ? 'Already one of ours? Login instead' : 'First time here? Join Us'}}</div>
-      <button mat-stroked-button color="primary" (click)="authType=authType === 'LOGIN' ? 'REGISTER' : 'LOGIN'">
+    
+    <div id="bottom_switch">
+      <div>
+        {{this.authType === 'REGISTER' ? 'Already one of ours? Login instead' : 'First time here? Join us'}}
+      </div>
+
+      <button mat-stroked-button color="primary" (click)="changeGoal()">
         {{this.authType === 'REGISTER' ? 'Login' : 'Register'}}
       </button>
     </div>
+
   </div>
 </div>

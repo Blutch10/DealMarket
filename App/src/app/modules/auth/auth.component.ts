@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -31,16 +31,26 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ],
 })
 export class AuthComponent implements OnInit {
-  name = new FormControl('');
+  
+  username = new FormControl('');
+  firstname = new FormControl('');
+  lastname = new FormControl('');
   email = new FormControl('');
+  
+  name = new FormControl('');
   password = new FormControl('');
-  showPassword = false;
+  showPassword: boolean = false;
 
   authType: 'REGISTER' | 'LOGIN' = 'LOGIN';
-
-  constructor() { }
 
   ngOnInit(): void {
   }
 
+  changeVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  changeGoal(): void {
+    this.authType= (this.authType === 'LOGIN') ? 'REGISTER' : 'LOGIN';
+  }
 }
