@@ -58,7 +58,7 @@
       </mat-hint>
     </mat-form-field>
     
-    <button id="submit_button" color="primary" mat-flat-button>
+    <button id="submit_button" color="primary" mat-flat-button (click)="login()">
       {{this.authType === 'REGISTER' ? 'Register' : 'Login'}}
     </button>
     

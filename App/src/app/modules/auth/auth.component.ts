@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { IBasicResponse } from 'src/app/interfaces/basic_response';
 
 @Component({
   selector: 'app-auth',
@@ -43,14 +46,29 @@ export class AuthComponent implements OnInit {
 
   authType: 'REGISTER' | 'LOGIN' = 'LOGIN';
 
+  
+  constructor(private auth : AuthService) { }
+
+
   ngOnInit(): void {
   }
+
 
   changeVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 
+
   changeGoal(): void {
     this.authType= (this.authType === 'LOGIN') ? 'REGISTER' : 'LOGIN';
+  }
+
+
+  login() {
+    //this.auth.login();
+  }
+
+  logout() : void {
+    this.auth.logout();
   }
 }
