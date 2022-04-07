@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 const Database = require('./DataBase').default;
 const path = require('path');
 
@@ -23,7 +24,7 @@ app.use(session(
     }
 ));
 
-
+app.use(cors()); // Gère les requêtes CORS
 
 /************
 *   Routes  *
@@ -41,5 +42,5 @@ app.use('/', router);
 
 
 // User routes
-const userRoute = require('./User/UserRouter.js');
-app.use('/user', userRoute);
+const UserRouter = require('./User/UserRouter.js');
+app.use('/user', UserRouter);
