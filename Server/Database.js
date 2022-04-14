@@ -30,7 +30,7 @@ class Database {
         let database = this.database;
         return new Promise((resolve, reject) => {
             bcrypt.hash(password, 10)
-            .then(function(hash) {
+            .then((hash) => {
                 
                 let nUser = {
                     username_: username,
@@ -128,6 +128,44 @@ class Database {
                 }      
             });
         }); 
+    }
+
+
+    changePassword(userid, oldPassword, newPassword)
+    {
+        return new Promise((resolve, reject) => {
+            this.database.find({_id: userid}, (err, doc) => {
+                if (err)
+                    reject(err.message);
+                else if (docs.length === 0)
+                    resolve(undefined);
+                else {
+                    let hash = doc[0].password_;
+                    bcrypt.compare(oldPassword, hash)
+                        .then((result) => {
+                            if (result === true) {
+                                bcrypt.hash(newPassword, 10)
+                                    .then((hash) => {
+                                        this.database.update({_id: userid}, {password_: hash}, {}, (err, numReplaced) => {
+                                            if (err)
+                                                reject(err.message);
+                                            if (numReplaced === 1)
+                                                resolve(true);
+                                            resolve(false);
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        reject(err.message);
+                                    })
+                            }
+                            resolve(false);
+                        })
+                        .catch((err) => {
+                            reject(err.message);
+                        });
+                }      
+            });
+        });
     }
 
 }
