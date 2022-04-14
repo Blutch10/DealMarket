@@ -1,4 +1,5 @@
 ﻿const Datastore = require('nedb');
+const bcrypt = require('bcrypt');
 
 class Database {
 
@@ -26,20 +27,28 @@ class Database {
      */
      addUser(username, firstname, lastname, email, password)
      {
-        let nUser = {
-            username_: username,
-            firstname_: firstname,
-            lastname_: lastname,
-            email_: email,
-            password_: password
-        };
-
+        let database = this.database;
         return new Promise((resolve, reject) => {
-            this.database.insert(nUser, (err, newDoc) => {
-                if (err)
-                    reject(err.message);
-                else
-                    resolve(newDoc._id)
+            bcrypt.hash(password, 10)
+            .then(function(hash) {
+                
+                let nUser = {
+                    username_: username,
+                    firstname_: firstname,
+                    lastname_: lastname,
+                    email_: email,
+                    password_: hash
+                };
+
+                database.insert(nUser, (err, newDoc) => {
+                        if (err)
+                            reject(err.message);
+                        else
+                            resolve(newDoc._id);
+                });
+            })
+            .catch((err) => {
+                reject(err.message)
             });
         });
      }
@@ -99,17 +108,26 @@ class Database {
      */
     checkLoginInformation(username, password)
     {
-        // ToDo : Modifier pour prendre en compte BCrypt
         return new Promise((resolve, reject) => {
-            this.database.find({username_: username, password_: password}, (err, docs) => {
+            this.database.find({username_: username}, (err, docs) => {
                 if (err)
                     reject(err.message);
                 else if (docs.length === 0)
                     resolve(undefined);
-                else
-                    resolve(docs[0]._id);
+                else {
+                    let hash = docs[0].password_;
+                    bcrypt.compare(password, hash)
+                        .then((result) => {
+                            if (result === true)
+                                resolve(docs[0]._id);
+                            resolve(false);
+                        })
+                        .catch((err) => {
+                            reject(err.message);
+                        });
+                }      
             });
-        });
+        }); 
     }
 
 }

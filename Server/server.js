@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const NedbStore = require('connect-nedb-session')(session);
 const cors = require('cors');
 const Database = require('./DataBase').default;
 const path = require('path');
@@ -20,7 +21,8 @@ app.use(session(
         secret: "N0tAG00dPractice", 
         resave: false, 
         saveUninitialized: true,
-        cookie: {path: '/', httpOnly: true, secure: false, maxAge: 300000} 
+        cookie: {path: '/', httpOnly: true, secure: false, maxAge: 300000},
+        store: new NedbStore({ filename: './sessions.db' })
     }
 ));
 
