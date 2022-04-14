@@ -11,6 +11,7 @@
         type="text"
         autocomplete="off"
         placeholder="Username"
+        [(ngModel)] = "username_"
       />
     </mat-form-field>
 
@@ -20,6 +21,7 @@
         type="text"
         autocomplete="off"
         placeholder="Lastname"
+        [(ngModel)] = "lastname_"
       />
     </mat-form-field>
       
@@ -29,6 +31,7 @@
         type="text"
         autocomplete="off"
         placeholder="Firstname"
+        [(ngModel)] = "firstname_"
       />
     </mat-form-field>
     
@@ -38,6 +41,7 @@
         type="email"
         autocomplete="off"
         placeholder="E-mail"
+        [(ngModel)] = "email_"
       />
     </mat-form-field>
     
@@ -47,6 +51,7 @@
         autocomplete="off"
         [type]="showPassword ? 'text' : 'password'"
         placeholder="Password"
+        [(ngModel)]="password_" 
       />
       
       <mat-icon id="visibility" matSuffix (click)="changeVisibility()">
@@ -58,7 +63,7 @@
       </mat-hint>
     </mat-form-field>
     
-    <button id="submit_button" color="primary" mat-flat-button (click)="login()">
+    <button id="submit_button" color="primary" mat-flat-button (click)="submitButtonFunc()">
       {{this.authType === 'REGISTER' ? 'Register' : 'Login'}}
     </button>
     

@@ -25,7 +25,6 @@ export class AuthService {
             next: (data) => {
                 if (data.status === 200 && data.message === 'Successful authentication')
                     this.isAuthenticated = true;
-                    console.log(`isAuthenticated : ${this.isAuthenticated}`);
             },
             error: (error) => {
                 console.log(error);

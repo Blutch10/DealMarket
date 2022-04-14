@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
-import { IBasicResponse } from 'src/app/interfaces/basic_response';
+import { AuthService } from './auth.login.service';
+import { RegisterService } from './auth.register.service';
 
 @Component({
   selector: 'app-auth',
@@ -36,18 +35,24 @@ import { IBasicResponse } from 'src/app/interfaces/basic_response';
 export class AuthComponent implements OnInit {
   
   username = new FormControl('');
+  username_ : string = "";
   firstname = new FormControl('');
+  firstname_ : string = "";
   lastname = new FormControl('');
+  lastname_ : string = "";
   email = new FormControl('');
+  email_ : string = "";
   
   name = new FormControl('');
+  name_ : string = "";
   password = new FormControl('');
+  password_ : string = "";
   showPassword: boolean = false;
 
   authType: 'REGISTER' | 'LOGIN' = 'LOGIN';
 
   
-  constructor(private auth : AuthService) { }
+  constructor(private auth : AuthService, private reg : RegisterService) { }
 
 
   ngOnInit(): void {
@@ -64,9 +69,23 @@ export class AuthComponent implements OnInit {
   }
 
 
-  login() {
-    //this.auth.login();
+  submitButtonFunc() : void {
+    if (this.authType === 'REGISTER')
+      this.register();
+    if (this.authType === 'LOGIN')
+      this.login()
   }
+
+
+  login() : void {
+    this.auth.login(this.username_, this.password_);
+  }
+
+
+  register() : void {
+    this.reg.register(this.username_, this.lastname_, this.firstname_, this.email_, this.password_);
+  }
+  
 
   logout() : void {
     this.auth.logout();
