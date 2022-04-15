@@ -174,7 +174,7 @@ class User
             if (err)
                 res.status(500).json({
                     status: 500,
-                    message: "Erreur interne au serveur"
+                    message: "Server internal error"
                 });
             else {
                 res.status(200).json({
@@ -184,6 +184,66 @@ class User
                 
             }
         });
+    }
+
+    /**
+     * Updates the password of the user.
+     * @param {Request} req the user's request.
+     * @param {Response} res the user's response.
+     */
+    updatePassword(req, res)
+    {
+        let userid = req.session.userid;
+        if (! userid)
+        {
+            res.status(401).json({
+                status: 401,
+                message: "Operation needs to be logged in"
+            });
+            return;
+        }
+
+        const {  oldPassword, newPassword } = req.body;
+        if (! oldPassword || !newPassword)
+        {
+            res.status(400).json({
+                status: 400,
+                message: "Invalid form"
+            });
+            return;
+        }
+
+        this.database.changePassword(userid, oldPassword, newPassword)
+            .then((val) => {
+                if (val)
+                {
+                    res.status(200).json({
+                        status: 200,
+                        message: "Password changed"
+                    });
+                }
+                else if (val === false)
+                {
+                    res.status(500).json({
+                        status: 500,
+                        message: "Couldn't update the password"
+                    })
+                }
+                else if (val === undefined)
+                {
+                    res.status(400).json({
+                        status: 400,
+                        message: "The user doesn't exist"
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log(err);   // DEBUG
+                res.status(500).json({
+                    status: 500,
+                    message: "Server internal error"
+                });
+            });
     }
 }
 

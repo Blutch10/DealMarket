@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const NedbStore = require('connect-nedb-session')(session);
 const cors = require('cors');
-const Database = require('./DataBase').default;
+const Database = require('./Database').default;
 const path = require('path');
 
 

@@ -131,40 +131,77 @@ class Database {
     }
 
 
-    changePassword(userid, oldPassword, newPassword)
+    /**
+     * Checks the provided password against the one in the database.
+     * @param {String} userid the user who wants to check the password.
+     * @param {String} password the password in plaintext.
+     * @returns A promise which resolves in true if the test is passed, false if not and an
+     * error otherwise.
+     */
+    checkPassword(userid, password)
     {
         return new Promise((resolve, reject) => {
             this.database.find({_id: userid}, (err, doc) => {
                 if (err)
                     reject(err.message);
-                else if (docs.length === 0)
+                else if ( ! doc)
                     resolve(undefined);
-                else {
+                else
+                {
                     let hash = doc[0].password_;
-                    bcrypt.compare(oldPassword, hash)
+                    bcrypt.compare(password, hash)
                         .then((result) => {
-                            if (result === true) {
-                                bcrypt.hash(newPassword, 10)
-                                    .then((hash) => {
-                                        this.database.update({_id: userid}, {password_: hash}, {}, (err, numReplaced) => {
-                                            if (err)
-                                                reject(err.message);
-                                            if (numReplaced === 1)
-                                                resolve(true);
-                                            resolve(false);
-                                        });
-                                    })
-                                    .catch((err) => {
-                                        reject(err.message);
-                                    })
-                            }
-                            resolve(false);
+                            if (result)
+                                resolve(true);
+                            else
+                                resolve(false);
                         })
                         .catch((err) => {
                             reject(err.message);
-                        });
-                }      
+                        })
+                }
             });
+        });
+    }
+
+    
+    /**
+     * Updates the user's password after having performed authentication test.
+     * @param {String} userid The user's userid in the database.
+     * @param {String} oldPassword the old password in plaintext.
+     * @param {String} newPassword the new password in plaintext.
+     * @returns A promise which resolves in true if the operation was performed
+     * successfully, in false if a logical error occured, in undefined if the user doesn't exist
+     * and in error otherwise.
+     */
+    changePassword(userid, oldPassword, newPassword)
+    {
+        return new Promise((resolve, reject) => {
+            this.checkPassword(userid, oldPassword)
+                .then((result) => {
+                    if (! result)
+                        resolve(false);
+                    else
+                    {
+                        bcrypt.hash(newPassword, 10)
+                            .then((hash) => {
+                                this.database.update({_id: userid}, { $set : {password_: hash} }, (err, numReplaced) => {
+                                    if (err)
+                                        reject(err.message);
+                                    if (numReplaced === 1)
+                                        resolve(true);
+                                    else
+                                        resolve(false);
+                                });
+                            })
+                            .catch((err) => {
+                                reject(err.message);
+                            })
+                    }
+                })
+                .catch((err) => {
+                    reject(err.message);
+                });
         });
     }
 

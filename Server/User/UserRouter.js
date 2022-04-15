@@ -31,5 +31,9 @@ router.delete('/deleteAccount', (req, res) => {
     user.deleteUser(req, res);
 });
 
+// Update password
+router.put('/resetPassword', (req, res) => {
+    user.updatePassword(req, res);
+})
 
 module.exports = router;
