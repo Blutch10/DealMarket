@@ -4,7 +4,7 @@
  */
 
 const express = require('express');
-const database = require('../server.js');
+const database = require('../server.js').userDB;
 const User = require('./User.js').default;
 
 const router = express.Router();
@@ -35,5 +35,6 @@ router.delete('/deleteAccount', (req, res) => {
 router.put('/resetPassword', (req, res) => {
     user.updatePassword(req, res);
 })
+
 
 module.exports = router;

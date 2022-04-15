@@ -2,7 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const NedbStore = require('connect-nedb-session')(session);
 const cors = require('cors');
-const Database = require('./Database').default;
+const UserDatabase = require('./User/UserDatabase').default;
+const CryptoDatabase = require('./Crypto/CryptoDatabase').default;
 const path = require('path');
 
 
@@ -10,8 +11,11 @@ const app = express();
 
 app.listen(8080, () => console.log("Server listening on port 8080"));
 
-let database = new Database(path.resolve(__dirname, './database.db'));
-module.exports = database;
+let userDatabase = new UserDatabase(path.resolve(__dirname, './User/UserDatabase.db'));
+exports.userDB = userDatabase;
+
+let cryptoDatabase = new CryptoDatabase(path.resolve(__dirname, './Crypto/CryptoDatabase.db'));
+exports.cryptoDB = cryptoDatabase;
 
 /**************
 * Middlewares *
@@ -46,3 +50,7 @@ app.use('/', router);
 // User routes
 const UserRouter = require('./User/UserRouter.js');
 app.use('/user', UserRouter);
+
+// Crypto routes
+const CryptoRouter = require('./Crypto/CryptoRouter');
+app.use('/crypto', CryptoRouter);

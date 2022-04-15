@@ -86,11 +86,17 @@ class User
         }
         this.database.deleteUser(id)
             .then((val) => {
-                if (val === true)
+                if (val === true) 
+                {
+                    req.session.destroy((err) => {
+                        if (err)
+                            console.log(err);   //DEBUG
+                    });
                     res.status(200).json({
                         status: 200,
                         message: "Account deleted"
                     });
+                }
                 else
                 res.status(400).json({
                     status: 200,
