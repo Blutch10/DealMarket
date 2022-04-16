@@ -12,7 +12,7 @@ class UserDatabase {
             else
                 console.log("UserDatabase up and running !");
         }});
-        this.database.persistence.setAutocompactionInterval(60000); // Compacts the database each parameter milliseconds.
+        this.database.persistence.setAutocompactionInterval(5000); // Compacts the database each parameter milliseconds.
     }
 
 
@@ -425,6 +425,35 @@ class UserDatabase {
             })
             .catch((err) => {
                 reject(err.message);
+            });
+        });
+    }
+
+
+    /**
+     * Returns the last n operations for the user.
+     * @param {String} userid Tue user's ID.
+     * @param {Int} n The number of operations to get.
+     * @returns A promise which resolves in an array of last operations from latest to oldest, in undefined
+     * if the user doesn't exist and in error otherwise.
+     */
+    getLastOperations(userid, n)
+    {
+        return new Promise((resolve, reject) => {
+            this.database.find({_id: userid}, {operations_: 1}, (err, doc) => {
+                if (err)
+                    reject(err);
+                if (doc.length === 0)
+                    resolve(undefined);
+                else
+                {
+                    let operations = doc[0].operations_;
+                    let ops = [];
+                    for (let i = 1; i <= n; i++)
+                        ops.push(operations[operations.length - i]);
+                    
+                    resolve(ops);
+                }
             });
         });
     }

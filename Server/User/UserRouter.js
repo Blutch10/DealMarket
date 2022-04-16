@@ -36,5 +36,9 @@ router.put('/resetPassword', (req, res) => {
     user.updatePassword(req, res);
 })
 
+// Get the history of user
+router.get('/history', (req, res) => {
+    user.getLastOperations(req, res);
+});
 
 module.exports = router;

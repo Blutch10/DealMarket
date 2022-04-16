@@ -251,6 +251,57 @@ class User
                 });
             });
     }
+
+
+    /**
+     * Retrieves the last n operations of the user.
+     * @param {Request} req The user's request.
+     * @param {Response} res The user's response.
+     */
+    getLastOperations(req, res)
+    {
+        let userid = req.session.userid;
+        if (! userid)
+        {
+            res.status(401).json({
+                status: 401,
+                message: "Operation needs to be logged in"
+            });
+            return;
+        }
+
+        const { nbOps } = req.body;
+        if (! nbOps)
+        {
+            res.status(400).json({
+                status: 400,
+                message: "Invalid form"
+            });
+            return;
+        }
+
+
+        this.database.getLastOperations(userid, nbOps)
+            .then((val) => {
+                if (val === undefined)
+                    res.status(400).json({
+                        status: 400,
+                        message: "The user doesn't exist"
+                    });
+                else
+                    res.status(200).json({
+                        status: 200,
+                        message: "History retrieved",
+                        ops: val
+                    });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    status: 500,
+                    message: "Server internal error"
+                });
+            });
+    }
 }
 
 exports.default = User;
