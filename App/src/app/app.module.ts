@@ -14,13 +14,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphComponent } from './modules/graph/graph.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     PersonComponent,
     AuthComponent,
-    GraphComponent
+    GraphComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
