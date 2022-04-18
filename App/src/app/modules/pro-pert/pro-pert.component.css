@@ -1,0 +1,19 @@
+#root{
+    width: 1500px;
+    height: 700px;
+    background: darkgray;
+    position: relative;
+  }
+
+  .left-box,.right-box{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+  }
+  .left-box{
+    background: red;
+  }
+  .right-box{
+    left: 50%;
+    background: green;
+}

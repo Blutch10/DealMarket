@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphComponent } from './modules/graph/graph.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     PersonComponent,
     AuthComponent,
     GraphComponent,
-    SidebarComponent
+    SidebarComponent,
+    ProPertComponent
   ],
   imports: [
     BrowserModule,
