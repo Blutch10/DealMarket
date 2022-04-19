@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GraphComponent } from './modules/graph/graph.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule }from '@swimlane/ngx-charts';
 
 
 
@@ -28,7 +28,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     GraphComponent,
     SidebarComponent,
     ProPertComponent,
-    NgxChartsModule
   ],
   imports: [
     BrowserModule,
@@ -41,6 +40,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

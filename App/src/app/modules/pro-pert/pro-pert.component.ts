@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserModule } from '@angular/platform-browser';
-import { testdata } from './data';
+import { single } from './data';
 
 @Component({
   selector: 'app-pro-pert',
@@ -14,8 +14,8 @@ export class ProPertComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  testdata: any[];
-  view: any[] = [700, 400];
+  single: any[] = [];
+  view: any[] = [];
 
   // options
   gradient: boolean = true;
@@ -29,18 +29,18 @@ export class ProPertComponent implements OnInit {
   };
 
   constructor() {
-    Object.assign(this, { testdata });
+    Object.assign(this, { single });
   }
 
-  onSelect(data): void {
+  onSelect(data: any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
-  onActivate(data): void {
+  onActivate(data: any): void {
     console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
-  onDeactivate(data): void {
+  onDeactivate(data: any): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 

@@ -1,4 +1,4 @@
-export var testdata = [
+export var single = [
     {
       "name": "Actif1",
       "value": 8940
