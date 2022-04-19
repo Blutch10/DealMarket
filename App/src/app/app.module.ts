@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { GraphComponent } from './modules/graph/graph.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
     AuthComponent,
     GraphComponent,
     SidebarComponent,
-    ProPertComponent
+    ProPertComponent,
+    NgxChartsModule
   ],
   imports: [
     BrowserModule,

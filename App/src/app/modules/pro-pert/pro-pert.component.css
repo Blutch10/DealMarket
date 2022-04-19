@@ -8,13 +8,25 @@
     height: 100%;
   }
   .left-box{
-    width: 300px;
+    width: 500px;
     height: 100%;
-    background: red;
+    background: #d2d2d2;
     float:left;
+
+    font-family: Quicksand, sans-serif !important;
+    box-shadow: 0 0 30px darkgrey;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
   }
+
+  .grey-text {
+    color: grey;
+  }
+
   .right-box{
-    width: calc(100% - 300px);
+    width: calc(100% - 560px);
     height: 100%;
     background: green;
     float:left;

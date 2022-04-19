@@ -1,6 +1,23 @@
 <div class="root">
     <div class="left-box">
-        <p>leftbox</p>
+        <div class ="piechart">
+            <h1 style="font-weight: 600;margin-bottom: 0">Chart</h1>
+            <small class="grey-text">Analyse your daily cost</small>
+            <ngx-charts-pie-chart
+                [view]="view"
+                [scheme]="colorScheme"
+                [results]="single"
+                [gradient]="gradient"
+                [legend]="showLegend"
+                [legendPosition]="legendPosition"
+                [labels]="showLabels"
+                [doughnut]="isDoughnut"
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+                >
+            </ngx-charts-pie-chart>
+        </div>
     </div>
 
     <div class="right-box">
