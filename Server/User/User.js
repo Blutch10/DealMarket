@@ -27,42 +27,54 @@ class User
             });
             return;
         }
-
-        // ToDo : Ajouter le code de vérification des entrées de l'utilisateur
-
-        // ToDo : Ajouter le code de calcul du hash et salt du mot de passe.
-
-        this.database.existUsername(username)
-            .then((val) => {
-                if (val)
-                    res.status(409).json({
-                        status: 409,
-                        message: "Username already taken"
+    
+        this.addUserSanitizing(username, firstname, lastname, email, password)
+            .then((pass) => {
+                password = pass;
+                this.database.existUsername(username)
+                    .then((val) => {
+                    if (val)
+                        res.status(409).json({
+                            status: 409,
+                            message: "Username already taken"
+                        });
+                    else
+                    {
+                        this.database.addUser(username, firstname, lastname, email, password)
+                            .then((val) => {
+                                res.status(201).json({
+                                    status: 201,
+                                    message: "Account created"
+                                });
+                            })
+                            .catch((err) => {
+                                console.log(err);   // DEBUG
+                                res.status(500).json({
+                                    status: 500,
+                                    message: "Database error"
+                                });
+                            });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);   // DEBUG
+                    res.status(500).json({
+                        status: 500,
+                        message: "Database error"
+                    });
+                });
+            })
+            .catch((errCode) => {
+                if (errCode === -1)
+                    res.status(400).json({
+                        status: 400,
+                        message: "Invalid character used in username, lastname or firstname"
                     });
                 else
-                {
-                    this.database.addUser(username, firstname, lastname, email, password)
-                        .then((val) => {
-                            res.status(201).json({
-                                status: 201,
-                                message: "Account created"
-                            });
-                        })
-                        .catch((err) => {
-                            console.log(err);   // DEBUG
-                            res.status(500).json({
-                                status: 500,
-                                message: "Database error"
-                            });
-                        });
-                }
-            })
-            .catch((err) => {
-                console.log(err);   // DEBUG
-                res.status(500).json({
-                    status: 500,
-                    message: "Database error"
-                });
+                    res.status(400).json({
+                        status: 400,
+                        message: "The provided email is invalid"
+                    });
             });
     }
 
@@ -132,6 +144,7 @@ class User
 
          // ToDo : Ajouter le code de vérification des entrées de l'utilisateur
 
+        password = this.sanitizePassword(password);
         this.database.checkLoginInformation(username, password)
             .then((val) => {
                 if (val)
@@ -219,6 +232,7 @@ class User
             return;
         }
 
+        oldPassword = this.checkPassword(oldPassword);
         this.database.changePassword(userid, oldPassword, newPassword)
             .then((val) => {
                 if (val)
@@ -301,6 +315,91 @@ class User
                     message: "Server internal error"
                 });
             });
+    }
+
+
+    /**
+     * Checks if the username, the lastname or the firstname do not include unwanted characters.
+     * @param {String} username The username.
+     * @param {String} lastname The user's lastname.
+     * @param {String} firstname The user's firstname.
+     * @returns true if everything is ok, false if an unwanted character is spotted.
+     */
+    checkNames(username, lastname, firstname)
+    {
+        let specialCharacters = "${}:/\\\"[]=()&#§!?*`£^¨;,<>°";
+        for (let i = 0; i < username.length; i++)
+            if (specialCharacters.includes(username[i]))
+                return false;
+
+        for (let i = 0; i < lastname.length; i++)
+            if (specialCharacters.includes(lastname[i]))
+                return false;
+
+        for (let i = 0; i < firstname.length; i++)
+            if (specialCharacters.includes(firstname[i]))
+                return false;
+        return true;
+    }
+
+
+    /**
+     * Checks whether an email adress is valid or not.
+     * @param {String} email The user's email.
+     * @returns true if the email is valid, false otherwise.
+     */
+    checkEmail(email)
+    {
+        let invalidCharacters = "${}:/\\\"[]=()&#§!?*`£^¨;,<>¨°"
+        for (let i = 0; i < email.length; i++)
+            if (invalidCharacters.includes(email[i]))
+                return false;
+
+        if (!email.includes("@") || !email.includes("."))
+            return false;
+        return true;
+    }
+
+
+    /**
+     * Replaces special characters in the password.
+     * @param {String} password The user's plaintext password.
+     * @returns The modified password.
+     */
+    sanitizePassword(password)
+    {
+        let specialCharacters = "${}:/\\\"[]=()&#§!?*`£^¨;,<>°";
+
+        for (let i = 0; i < password.length; i++)
+                if (specialCharacters.includes(password[i]))
+                {
+                    let change = password.charCodeAt(i).toString();
+                    password = password.slice(0, i) + change + password.slice(i + 1);
+                }
+        return password;
+    }
+
+
+    /**
+     * Used in addUser method to check the validity of the data provided by the user for this method.
+     * @param {String} username The username.
+     * @param {String} firstname The user's firstname.
+     * @param {String} lastname The user's lastname.
+     * @param {String} email The user's email.
+     * @param {String} password The user's plaintext password.
+     * @returns A promise which resolves in the modified password if everything is OK, rejects -1 if one of the names is invalid
+     * or -2 if the email is invalid.
+     */
+    addUserSanitizing(username, firstname, lastname, email, password)
+    {
+        return new Promise((resolve, reject) => {
+            if (!this.checkNames(username, lastname, firstname))
+                reject(-1);
+            else if (!this.checkEmail(email))
+                reject(-2);
+            password = this.sanitizePassword(password);
+            resolve(password);
+        });
     }
 }
 

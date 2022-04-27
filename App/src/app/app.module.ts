@@ -17,8 +17,8 @@ import { GraphComponent } from './modules/graph/graph.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
-
-
+import { CandlestickComponent } from './modules/candlestick/candlestick.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
     GraphComponent,
     SidebarComponent,
     ProPertComponent,
+    CandlestickComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +41,8 @@ import { NgxChartsModule }from '@swimlane/ngx-charts';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxChartsModule
+    NgxChartsModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
