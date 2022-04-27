@@ -1,0 +1,43 @@
+<div id="auth-root">
+    <div id="auth-container">
+
+        <mat-form-field class="form_input" appearance="outline">
+            <input matInput
+              [formControl]="password1"
+              autocomplete="off"
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+              [(ngModel)]="password_" 
+            />
+            
+            <mat-icon id="visibility" matSuffix (click)="changeVisibility()">
+              {{showPassword ? "visibility_off" : "visibility"}}
+            </mat-icon>
+            
+            <mat-hint
+              *ngIf="password1.value!=='' && authType!=='LOGIN'">{{password.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}} && 
+            </mat-hint>
+          </mat-form-field>
+
+        
+          <mat-form-field class="form_input" appearance="outline">
+            <input matInput
+              [formControl]="password2"
+              autocomplete="off"
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+              [(ngModel)]="password_" 
+            />
+            
+            <mat-icon id="visibility" matSuffix (click)="changeVisibility()">
+              {{showPassword ? "visibility_off" : "visibility"}}
+            </mat-icon>
+            
+            <mat-hint
+              *ngIf="password2.value!=='' && authType!=='LOGIN'">{{password.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}} && 
+              *ngIf="password2.value !== password1.value"> {{'Not the same passords'}}
+            </mat-hint>
+          </mat-form-field>
+
+    </div>
+</div>
