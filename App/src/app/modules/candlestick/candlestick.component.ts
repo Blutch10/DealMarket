@@ -1,4 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import * as moment from "moment";
+import { seriesData, seriesDataLinear } from "./ohlc";
 
 import {
   ChartComponent,
@@ -6,18 +8,22 @@ import {
   ApexChart,
   ApexYAxis,
   ApexXAxis,
+  ApexTitleSubtitle,
+  ApexTooltip,
   ApexPlotOptions,
   ApexDataLabels,
   ApexStroke
 } from "ng-apexcharts";
 
-import { seriesData, seriesDataLinear } from "./ohlc";
+
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
+  title: ApexTitleSubtitle;
+  tooltip: ApexTooltip;
   plotOptions: ApexPlotOptions;
   dataLabels: ApexDataLabels;
   stroke: ApexStroke;
@@ -43,26 +49,63 @@ export class CandlestickComponent {
       ],
       chart: {
         type: "candlestick",
+        group: 'chartgroup',
+        background: '#18112C',
+        foreColor: '#B8B0BC',
         height: 290,
         id: "candles",
         toolbar: {
           autoSelected: "pan",
-          show: false
+          show: true
         },
-        zoom: {
-          enabled: false
-        }
+      },
+      title: {
+        text: "CandleStick Chart - Category X-axis",
+        align: "left"
+      },
+      tooltip: {
+        enabled: true,
+        theme : 'dark',
       },
       plotOptions: {
         candlestick: {
           colors: {
-            upward: "#3C90EB",
-            downward: "#DF7D46"
+            upward: "#00CC00",
+            downward: "#CC0022"
           }
         }
       },
       xaxis: {
-        type: "datetime"
+
+        type: "datetime",
+        crosshairs: {
+          show: false,
+        }
+        
+      },
+      yaxis: {
+        axisBorder: {
+          show: true,
+          color: '#B8B0BC',
+          offsetX: 3,
+          offsetY: 1
+      },
+        tooltip: {
+          enabled: false
+        },
+        title: {
+          text: "BTC/USDT",
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: undefined,
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              cssClass: 'apexcharts-yaxis-title',
+          },
+        }
       }
     };
 
@@ -74,26 +117,15 @@ export class CandlestickComponent {
         }
       ],
       chart: {
+        group: 'chartgroup',
+        background: '#18112C',
+        foreColor: '#B8B0BC',
+        id: "barchart",
         height: 160,
         type: "bar",
-        brush: {
-          enabled: true,
-          target: "candles"
+        toolbar: {
+          show: false
         },
-        selection: {
-          enabled: true,
-          xaxis: {
-            min: new Date("20 Jan 2017").getTime(),
-            max: new Date("10 Dec 2017").getTime()
-          },
-          fill: {
-            color: "#ccc",
-            opacity: 0.4
-          },
-          stroke: {
-            color: "#0D47A1"
-          }
-        }
       },
       dataLabels: {
         enabled: false
@@ -128,8 +160,8 @@ export class CandlestickComponent {
       },
       yaxis: {
         labels: {
-          show: false
-        }
+          show: true,
+        },
       }
     };
   }
