@@ -457,6 +457,18 @@ class UserDatabase {
             });
         });
     }
+
+
+    test(symbol_)
+    {
+        let start = Date.now() - 300000;
+        console.log(start);
+        this.client.prices()
+            .then((val) => {
+                console.log(val);
+            })
+            .catch((err) => console.log(err));
+    }
 }
 
 exports.default = UserDatabase;

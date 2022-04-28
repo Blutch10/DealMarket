@@ -41,4 +41,9 @@ router.get('/history', (req, res) => {
     user.getLastOperations(req, res);
 });
 
+
+router.get('/test', (req, res) => {
+    user.test(req, res);
+});
+
 module.exports = router;

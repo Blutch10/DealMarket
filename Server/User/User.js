@@ -401,6 +401,12 @@ class User
             resolve(password);
         });
     }
+
+    test(req, res)
+    {
+        const { symbol } = req.body;
+        this.database.test(symbol);
+    }
 }
 
 exports.default = User;
