@@ -44,7 +44,7 @@ class Crypto
             .catch((err) => {
                 res.status(500).json({
                     status: 500,
-                    message: "Sever internal error"
+                    message: "Server internal error"
                 });
             });
     }
@@ -104,7 +104,7 @@ class Crypto
      * @param {Response} res The server response.
      */
      sellCoin(req, res)
-     {
+    {
          let userid = req.session.userid;
          if (! userid)
          {
@@ -143,7 +143,51 @@ class Crypto
                          message: "Operation successful"
                      });
              })
-     }
+    }
+
+    /**
+     * Gets the candle values for a specified symbol.
+     * @param {Reques} req The user's request.
+     * @param {Response} res The server's response.
+     */
+    getCandle(req, res)
+    {
+        const { symbol } = req.body;
+        if (! symbol)
+        {
+            res.status(400).json({
+                status: 400,
+                message: "Invalid form"
+            });
+            return;
+        }
+
+        this.cryptoDB.getCandle(symbol)
+            .then((val) => {
+                if (val !== undefined && val !== [])
+                    res.status(200).json({
+                        status: 200,
+                        message: "Values retrieved",
+                        values: val
+                    });
+                else if (val !== undefined)
+                    res.status(200).json({
+                        status: 200,
+                        message: "No values in history"
+                    });
+                else
+                    res.status(400).json({
+                        status: 400,
+                        message: "Unknown symbol"
+                    });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    status: 500,
+                    message: "Server internal error"
+                });
+            });
+    }
 }
 
 exports.default = Crypto;

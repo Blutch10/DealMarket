@@ -435,6 +435,27 @@ class CryptoDatabase
                 .catch((err) => console.log(err));
         }
     }
+
+    
+    /**
+     * Gets the candles for a certain symbol.
+     * @param {String} symbol_ The symbol of the coin.
+     * @returns A promise which resolves in the history of coin's values if successful, in undefined if the symbol
+     * is unknown, and in error otherwise.
+     */
+    getCandle(symbol_)
+    {
+        return new Promise((resolve, reject) => {
+            this.database.find({ symbol: symbol_ }, (err, doc) => {
+                if (err)
+                    reject(err);
+                if (doc.length !== 1)
+                    resolve(undefined);
+                else
+                    resolve(doc[0].history);
+            });
+        })
+    }
 }
 
 exports.default = CryptoDatabase;

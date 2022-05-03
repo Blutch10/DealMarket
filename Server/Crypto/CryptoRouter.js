@@ -31,4 +31,8 @@ router.post('/sell', (req, res) => {
     crypto.sellCoin(req,res);
 });
 
+router.get('/candle', (req, res) => {
+    crypto.getCandle(req, res);
+});
+
 module.exports = router;
