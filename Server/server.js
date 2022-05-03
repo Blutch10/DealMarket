@@ -4,17 +4,17 @@ const NedbStore = require('connect-nedb-session')(session);
 const cors = require('cors');
 const UserDatabase = require('./User/UserDatabase').default;
 const CryptoDatabase = require('./Crypto/CryptoDatabase').default;
-const path = require('path');
+const cron = require('node-cron');
 
 
 const app = express();
 
 app.listen(8080, () => console.log("Server listening on port 8080"));
 
-let userDatabase = new UserDatabase(path.resolve(__dirname, './User/UserDatabase.db'));
+let userDatabase = new UserDatabase();
 exports.userDB = userDatabase;
 
-let cryptoDatabase = new CryptoDatabase(path.resolve(__dirname, './Crypto/CryptoDatabase.db'));
+let cryptoDatabase = new CryptoDatabase();
 exports.cryptoDB = cryptoDatabase;
 
 /**************
@@ -54,3 +54,13 @@ app.use('/user', UserRouter);
 // Crypto routes
 const CryptoRouter = require('./Crypto/CryptoRouter');
 app.use('/crypto', CryptoRouter);
+
+
+/************
+ * Cronjobs *
+ ************/
+
+ cron.schedule('0 * * * *', () => {
+    this.cryptoDB.updateDatabase();
+    console.log('\nCrypto database updated\.n'); // DEBUG
+  });

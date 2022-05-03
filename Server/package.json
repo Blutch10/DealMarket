@@ -16,7 +16,7 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "nedb": "^1.8.0",
-    "sqlite3": "^5.0.2"
+    "node-cron": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

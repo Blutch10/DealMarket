@@ -1,15 +1,15 @@
 ﻿const Datastore = require('nedb');
-const Binance = require('binance-api-node').default
+const Binance = require('binance-api-node').default;
+const fs = require('fs');
 
 class CryptoDatabase 
 {
-    constructor(path) 
+    constructor() 
     {
         this.coins = [
             'BTCUSDT',
             'ETHUSDT',
             'BNBUSDT',
-            'BCCUSDT',
             'NEOUSDT',
             'LTCUSDT',
             'QTUMUSDT',
@@ -23,17 +23,11 @@ class CryptoDatabase
             'TRXUSDT',
             'ETCUSDT',
             'ICXUSDT',
-            'VENUSDT',
             'NULSUSDT',
             'VETUSDT',
-            'PAXUSDT',
-            'BCHABCUSDT',
-            'BCHSVUSDT',
             'USDCUSDT',
             'LINKUSDT',
             'WAVESUSDT',
-            'BTTUSDT',
-            'USDSUSDT',
             'ONGUSDT',
             'HOTUSDT',
             'ZILUSDT',
@@ -45,7 +39,6 @@ class CryptoDatabase
             'IOSTUSDT',
             'CELRUSDT',
             'DASHUSDT',
-            'NANOUSDT',
             'OMGUSDT',
             'THETAUSDT',
             'ENJUSDT',
@@ -56,15 +49,12 @@ class CryptoDatabase
             'ONEUSDT',
             'FTMUSDT',
             'ALGOUSDT',
-            'USDSBUSDT',
             'GTOUSDT',
-            'ERDUSDT',
             'DOGEUSDT',
             'DUSKUSDT',
             'ANKRUSDT',
             'WINUSDT',
             'COSUSDT',
-            'NPXSUSDT',
             'COCOSUSDT',
             'MTLUSDT',
             'TOMOUSDT',
@@ -72,7 +62,6 @@ class CryptoDatabase
             'DENTUSDT',
             'MFTUSDT',
             'KEYUSDT',
-            'STORMUSDT',
             'DOCKUSDT',
             'WANUSDT',
             'FUNUSDT',
@@ -84,7 +73,6 @@ class CryptoDatabase
             'XTZUSDT',
             'RENUSDT',
             'RVNUSDT',
-            'HCUSDT',
             'HBARUSDT',
             'NKNUSDT',
             'STXUSDT',
@@ -92,7 +80,6 @@ class CryptoDatabase
             'ARPAUSDT',
             'IOTXUSDT',
             'RLCUSDT',
-            'MCOUSDT',
             'CTXCUSDT',
             'BCHUSDT',
             'TROYUSDT',
@@ -100,39 +87,25 @@ class CryptoDatabase
             'FTTUSDT',
             'OGNUSDT',
             'DREPUSDT',
-            'BULLUSDT',
-            'BEARUSDT',
-            'ETHBULLUSDT',
-            'ETHBEARUSDT',
             'TCTUSDT',
             'WRXUSDT',
             'BTSUSDT',
             'LSKUSDT',
             'BNTUSDT',
             'LTOUSDT',
-            'EOSBULLUSDT',
-            'EOSBEARUSDT',
-            'XRPBULLUSDT',
-            'XRPBEARUSDT',
-            'STRATUSDT',
             'AIONUSDT',
             'MBLUSDT',
             'COTIUSDT',
-            'BNBBULLUSDT',
-            'BNBBEARUSDT',
             'STPTUSDT',
             'WTCUSDT',
             'DATAUSDT',
-            'XZCUSDT',
             'SOLUSDT',
             'CTSIUSDT',
             'HIVEUSDT',
             'CHRUSDT',
             'BTCUPUSDT',
             'BTCDOWNUSDT',
-            'GXSUSDT',
             'ARDRUSDT',
-            'LENDUSDT',
             'MDTUSDT',
             'STMXUSDT',
             'KNCUSDT',
@@ -140,7 +113,6 @@ class CryptoDatabase
             'LRCUSDT',
             'PNTUSDT',
             'COMPUSDT',
-            'BKRWUSDT',
             'SCUSDT',
             'ZENUSDT',
             'SNXUSDT',
@@ -155,13 +127,10 @@ class CryptoDatabase
             'GBPUSDT',
             'SXPUSDT',
             'MKRUSDT',
-            'DAIUSDT',
             'DCRUSDT',
             'STORJUSDT',
             'BNBUPUSDT',
             'BNBDOWNUSDT',
-            'XTZUPUSDT',
-            'XTZDOWNUSDT',
             'MANAUSDT',
             'AUDUSDT',
             'YFIUSDT',
@@ -182,7 +151,6 @@ class CryptoDatabase
             'PAXGUSDT',
             'WNXMUSDT',
             'TRBUSDT',
-            'BZRXUSDT',
             'SUSHIUSDT',
             'YFIIUSDT',
             'KSMUSDT',
@@ -191,8 +159,6 @@ class CryptoDatabase
             'RUNEUSDT',
             'FIOUSDT',
             'UMAUSDT',
-            'EOSUPUSDT',
-            'EOSDOWNUSDT',
             'TRXUPUSDT',
             'TRXDOWNUSDT',
             'XRPUPUSDT',
@@ -201,8 +167,6 @@ class CryptoDatabase
             'DOTDOWNUSDT',
             'BELUSDT',
             'WINGUSDT',
-            'LTCUPUSDT',
-            'LTCDOWNUSDT',
             'UNIUSDT',
             'NBSUSDT',
             'OXTUSDT',
@@ -210,26 +174,16 @@ class CryptoDatabase
             'AVAXUSDT',
             'HNTUSDT',
             'FLMUSDT',
-            'UNIUPUSDT',
-            'UNIDOWNUSDT',
             'ORNUSDT',
             'UTKUSDT',
             'XVSUSDT',
             'ALPHAUSDT',
             'AAVEUSDT',
             'NEARUSDT',
-            'SXPUPUSDT',
-            'SXPDOWNUSDT',
             'FILUSDT',
-            'FILUPUSDT',
-            'FILDOWNUSDT',
-            'YFIUPUSDT',
-            'YFIDOWNUSDT',
             'INJUSDT',
             'AUDIOUSDT',
             'CTKUSDT',
-            'BCHUPUSDT',
-            'BCHDOWNUSDT',
             'AKROUSDT',
             'AXSUSDT',
             'HARDUSDT',
@@ -239,18 +193,10 @@ class CryptoDatabase
             'ROSEUSDT',
             'AVAUSDT',
             'XEMUSDT',
-            'AAVEUPUSDT',
-            'AAVEDOWNUSDT',
             'SKLUSDT',
-            'SUSDUSDT',
-            'SUSHIUPUSDT',
-            'SUSHIDOWNUSDT',
-            'XLMUPUSDT',
-            'XLMDOWNUSDT',
             'GRTUSDT',
             'JUVUSDT',
             'PSGUSDT',
-            'USDTBVND',
             '1INCHUSDT',
             'REEFUSDT',
             'OGUSDT',
@@ -284,8 +230,6 @@ class CryptoDatabase
             'TKOUSDT',
             'PUNDIXUSDT',
             'TLMUSDT',
-            '1INCHUPUSDT',
-            '1INCHDOWNUSDT',
             'BTGUSDT',
             'MIRUSDT',
             'BARUSDT',
@@ -295,18 +239,15 @@ class CryptoDatabase
             'SLPUSDT',
             'SHIBUSDT',
             'ICPUSDT',
-            'USDTGYEN',
             'ARUSDT',
             'POLSUSDT',
             'MDXUSDT',
             'MASKUSDT',
             'LPTUSDT',
-            'NUUSDT',
             'XVGUSDT',
             'ATAUSDT',
             'GTCUSDT',
             'TORNUSDT',
-            'KEEPUSDT',
             'ERNUSDT',
             'KLAYUSDT',
             'PHAUSDT',
@@ -355,7 +296,6 @@ class CryptoDatabase
             'AUCTIONUSDT',
             'DARUSDT',
             'BNXUSDT',
-            'RGTUSDT',
             'MOVRUSDT',
             'CITYUSDT',
             'ENSUSDT',
@@ -372,7 +312,6 @@ class CryptoDatabase
             'ALCXUSDT',
             'SANTOSUSDT',
             'MCUSDT',
-            'ANYUSDT',
             'BICOUSDT',
             'FLUXUSDT',
             'FXSUSDT',
@@ -408,21 +347,94 @@ class CryptoDatabase
             'STEEMUSDT'
         ]
         this.client = Binance();
+
+        let initialized = false;
+        try
+        {
+            fs.accessSync('./Crypto/CryptoDatabase.db', fs.constants.F_OK);
+            initialized = true;
+        }
+        catch (err) { }
+
         this.database = new Datastore({filename: './Crypto/CryptoDatabase.db', autoload: true, onload: (err) => {
             if (err)
                 console.log(err.message);
-            else
+            else if (initialized)
                 console.log("CryptoDatabase up and running !");
+            else
+                this.initializeDatabase().then((val) => console.log("CryptoDatabase up and running !"));
         }});
-        this.database.persistence.setAutocompactionInterval(60000); // Compacts the database each parameter milliseconds.
+        this.database.persistence.setAutocompactionInterval(5*1000); // Compacts the database each parameter milliseconds.
     }
 
     
-    updateDatabase()
+    /**
+     * A method that initializes the database if the database file didn't exist.
+     * @returns A promise which resolves in true in case of success.
+     */
+    initializeDatabase()
     {
-        startTime = Date.now() - 300000;
+        return new Promise((resolve, reject) => {
+            
+            let allDocs = [];
+            
+            for (let coin of this.coins)
+            {
+                let doc = {
+                    symbol: coin,
+                    history: []
+                };
+                allDocs.push(doc);
+            }
+
+            this.database.insert(allDocs, (err) => {
+                if (err)
+                {
+                    console.log("Couldn't initialize Crypto database. Exiting...");
+                    process.exit();
+                }
+                else
+                    console.log("Crypto database initialized !");
+                    resolve(true);
+            });
+        });
     }
     
+    updateDatabase()
+    {
+        let currentDate = new Date();
+        let cDay = currentDate.getDate();
+        let cMonth = currentDate.getMonth();
+        let cYear = currentDate.getFullYear();
+        let cHour = currentDate.getHours();
+        let startTime_ = new Date(cYear, cMonth, cDay, cHour).valueOf();
+
+        for (let i = 0; i < this.coins.length; i++)
+        {
+            let coin = this.coins[i];
+            let entry = undefined;
+            this.client.candles({ symbol: coin, interval: '1h', startTime: startTime_ })
+                .then((candle) => {
+                    if (candle[0] === undefined) {
+                        console.log(coin);
+                    }
+                    candle = candle[0];
+                    entry = {
+                        opentime: startTime_,
+                        open: candle['open'],
+                        high: candle['high'],
+                        low: candle['low'],
+                        close: candle['close'],
+                        volume: candle['volume']
+                    }
+                    this.database.update({ symbol: coin }, { $push: { history: entry } }, {}, (err, numReplaced) => {
+                        if(err)
+                            console.log(err);
+                    });
+                })
+                .catch((err) => console.log(err));
+        }
+    }
 }
 
 exports.default = CryptoDatabase;

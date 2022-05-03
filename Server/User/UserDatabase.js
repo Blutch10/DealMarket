@@ -461,11 +461,25 @@ class UserDatabase {
 
     test(symbol_)
     {
-        let start = Date.now() - 300000;
-        console.log(start);
-        this.client.prices()
-            .then((val) => {
-                console.log(val);
+        let currentDate = new Date();
+        let cDay = currentDate.getDate();
+        let cMonth = currentDate.getMonth();
+        let cYear = currentDate.getFullYear();
+        let cHour = currentDate.getHours();
+        let startTime_ = new Date(cYear, cMonth, cDay, cHour).valueOf();
+
+        this.client.candles({ symbol: symbol_, interval: '1h', startTime: startTime_ })
+            .then((candle) => {
+                candle = candle[0];
+                entry = {
+                    opentime: candle['openTime'],
+                    open: candle['open'],
+                    high: candle['high'],
+                    low: candle['low'],
+                    close: candle['close'],
+                    volume: candle['volume']
+                }
+                console.log(entry);
             })
             .catch((err) => console.log(err));
     }
