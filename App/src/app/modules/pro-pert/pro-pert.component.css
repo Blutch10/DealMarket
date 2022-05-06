@@ -26,8 +26,15 @@
   }
 
   .right-box{
-    width: calc(100% - 560px);
+    width: calc(100% - 580px);
     height: 100%;
-    background: green;
+    background: #b8cbde;
     float:left;
-}
+    font-family: Quicksand, sans-serif !important;
+    box-shadow: 0 0 30px darkgrey;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+
+  }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserModule } from '@angular/platform-browser';
+import { ProPertService} from './pro-pert.service';
+import { Subscription } from "rxjs";
+import { IWalletResponse } from "../../interfaces/Responses/IWalletResponse";
 import { single } from './data';
 
 @Component({
@@ -11,11 +14,9 @@ import { single } from './data';
 export class ProPertComponent implements OnInit {
 
 
-  ngOnInit(): void {
-  }
-
-  single: any[] = [];
-  view: any[] = [];
+  actions: IWalletResponse[] = [];
+  view: IWalletResponse[] = [];
+  sub!: Subscription;
 
   // options
   gradient: boolean = true;
@@ -28,9 +29,23 @@ export class ProPertComponent implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  constructor() {
-    Object.assign(this, { single });
+  constructor(private hist : ProPertService) { }
+
+  ngOnInit() : void 
+  {
+      this.sub = this.hist.getWallet().subscribe({
+          next: (actions: { ops: IWalletResponse[]; }) => {
+              this.actions = actions.ops;
+          },
+          error: (err: any) => console.log(err)
+      });
   }
+
+  
+  ngOnDestroy() : void {
+      this.sub.unsubscribe();
+  }
+
 
   onSelect(data: any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
