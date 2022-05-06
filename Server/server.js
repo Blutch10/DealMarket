@@ -25,12 +25,20 @@ app.use(session(
         secret: "N0tAG00dPractice", 
         resave: false, 
         saveUninitialized: true,
-        cookie: {path: '/', httpOnly: true, secure: false, maxAge: 300000},
+        cookie: {path: '/', httpOnly: true, sameSite: false, secure: false/*, maxAge: 300000*/},
         store: new NedbStore({ filename: './sessions.db' })
     }
 ));
 
-app.use(cors()); // Gère les requêtes CORS
+
+let corsConfig = {
+    "origin": "http://localhost:4200",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204,
+    "credentials": true
+}
+app.use(cors(corsConfig)); // Gère les requêtes CORS
 
 /************
 *   Routes  *
@@ -53,6 +61,7 @@ app.use('/user', UserRouter);
 
 // Crypto routes
 const CryptoRouter = require('./Crypto/CryptoRouter');
+const { connect } = require('./User/UserRouter.js');
 app.use('/crypto', CryptoRouter);
 
 

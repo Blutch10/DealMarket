@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/internal/Observable";
-import { IBasicResponse } from "src/app/interfaces/basic_response";
+import { Router } from "@angular/router";
+import { IBasicResponse } from "src/app/interfaces/Responses/basic_response";
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +11,7 @@ export class AuthService {
     isAuthenticated: boolean = false;
     readonly ROOT_URL = 'http://127.0.0.1:8080/user';
 
-    constructor(private http : HttpClient) { }
+    constructor(private http : HttpClient, private router: Router) { }
 
     login(username_ : string, password_ : string) : void {
 
@@ -20,11 +20,13 @@ export class AuthService {
             password: password_
         }
 
-        this.http.post<IBasicResponse>(this.ROOT_URL + '/login', data)
+        this.http.post<IBasicResponse>(this.ROOT_URL + '/login', data, { withCredentials: true })
         .subscribe({
             next: (data) => {
-                if (data.status === 200 && data.message === 'Successful authentication')
+                if (data.status === 200 && data.message === 'Successful authentication') {
                     this.isAuthenticated = true;
+                    this.router.navigate(['dashboard']);
+                }
             },
             error: (error) => {
                 console.log(error);
@@ -39,6 +41,7 @@ export class AuthService {
             next: (data) => {
                 if (data.status === 200 && data.message === 'Successful logout')
                     this.isAuthenticated = false;
+                    this.router.navigate(['']);
             },
             error: (error) => {
                 console.log(error);

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { IBasicResponse } from "src/app/interfaces/basic_response";
+import { IBasicResponse } from "src/app/interfaces/Responses/basic_response";
 
 
 @Injectable({

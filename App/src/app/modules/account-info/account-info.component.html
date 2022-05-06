@@ -1,0 +1,17 @@
+﻿<div id="account-info-root">
+    <h1>Profile</h1>
+    <div *ngIf="this.infos !== undefined" id="profile-body">
+        <div id="photo-profile">
+            <img src="../../../assets/images/profil.jpg" alt="profile-pic" />
+        </div>
+        <div id="infos">
+            <p><i><b>Username :</b></i> {{this.infos.username_}}</p>
+            <p><i><b>Lastname :</b></i> {{ this.infos.lastname_ }}</p>
+            <p><i><b>Firstname :</b></i> {{ this.infos.firstname_ }}</p>
+            <p><i><b>E-mail :</b></i> {{ this.infos.email_ }}</p>
+        </div>
+        <div id="reset-pass">
+            <button> Change password ? </button>
+        </div>
+    </div>
+</div>

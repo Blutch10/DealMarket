@@ -19,6 +19,10 @@ import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { CandlestickComponent } from './modules/candlestick/candlestick.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { HistoryComponent } from './modules/History/history.component';
+import { AccountInfo } from './modules/account-info/account-info.component';
+import { Dashboard } from './modules/dashboard/dashboard.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -29,10 +33,17 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     SidebarComponent,
     ProPertComponent,
     CandlestickComponent,
+    HistoryComponent,
+    AccountInfo,
+    Dashboard
   ],
   imports: [
+    RouterModule.forRoot([
+      { path: 'dashboard', component: Dashboard },
+      { path: '', component: AuthComponent, pathMatch: 'full' },
+      { path: '**', redirectTo: '', pathMatch: 'full' }
+    ]),
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,

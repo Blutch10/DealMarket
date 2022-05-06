@@ -431,13 +431,12 @@ class UserDatabase {
 
 
     /**
-     * Returns the last n operations for the user.
+     * Returns the operation history for the user.
      * @param {String} userid Tue user's ID.
-     * @param {Int} n The number of operations to get.
-     * @returns A promise which resolves in an array of last operations from latest to oldest, in undefined
+     * @returns A promise which resolves in an array of operations from latest to oldest, in undefined
      * if the user doesn't exist and in error otherwise.
      */
-    getLastOperations(userid, n)
+    getLastOperations(userid)
     {
         return new Promise((resolve, reject) => {
             this.database.find({_id: userid}, {operations_: 1}, (err, doc) => {
@@ -449,11 +448,32 @@ class UserDatabase {
                 {
                     let operations = doc[0].operations_;
                     let ops = [];
-                    for (let i = 1; i <= n; i++)
+                    for (let i = 1; i <= operations.length; i++)
                         ops.push(operations[operations.length - i]);
                     
                     resolve(ops);
                 }
+            });
+        });
+    }
+
+
+    /**
+     * Get the user's non-critical account info.
+     * @param {String} userid The id of the user.
+     * @returns A promise which resolves in the array of info if successful, in
+     * undefined if the user doesn't exist and in error otherwise.
+     */
+    getAccountInfos(userid)
+    {
+        return new Promise((resolve, reject) => {
+            this.database.find({_id: userid}, {password_: 0, wallet_:0, operations_:0, _id:0}, (err, doc) => {
+                if (err)
+                    reject(err);
+                else if (doc.length !== 1)
+                    resolve(undefined);
+                else
+                    resolve(doc[0]);
             });
         });
     }
