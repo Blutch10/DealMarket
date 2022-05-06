@@ -1,6 +1,9 @@
+import { IWallet } from "../IWallet";
+
 export interface IWalletResponse {
 
-    name: string;
-    value: number;
+    status: number;
+    message: string;
+    ops: IWallet[];
     
 }

@@ -3,7 +3,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserModule } from '@angular/platform-browser';
 import { ProPertService} from './pro-pert.service';
 import { Subscription } from "rxjs";
-import { IWalletResponse } from "../../interfaces/Responses/IWalletResponse";
+import { IWallet } from "../../interfaces/IWallet";
 import { single } from './data';
 
 @Component({
@@ -14,8 +14,8 @@ import { single } from './data';
 export class ProPertComponent implements OnInit {
 
 
-  actions: IWalletResponse[] = [];
-  view: IWalletResponse[] = [];
+  actions: IWallet[] = [];
+  view: IWallet[] = [];
   sub!: Subscription;
 
   // options
@@ -32,14 +32,14 @@ export class ProPertComponent implements OnInit {
   constructor(private hist : ProPertService) { }
 
   ngOnInit() : void 
-  {
-      this.sub = this.hist.getWallet().subscribe({
-          next: (actions: { ops: IWalletResponse[]; }) => {
-              this.actions = actions.ops;
-          },
-          error: (err: any) => console.log(err)
-      });
-  }
+    {
+        this.sub = this.hist.getWallet().subscribe({
+            next: actions => {
+                this.actions = actions.ops;
+            },
+            error: err => console.log(err)
+        });
+    }
 
   
   ngOnDestroy() : void {
