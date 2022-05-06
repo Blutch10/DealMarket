@@ -32,7 +32,7 @@ import { RegisterService } from './auth.register.service';
     ),
   ],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent {
   
   username = new FormControl('');
   username_ : string = "";
@@ -53,10 +53,6 @@ export class AuthComponent implements OnInit {
 
   
   constructor(private auth : AuthService, private reg : RegisterService) { }
-
-
-  ngOnInit(): void {
-  }
 
 
   changeVisibility(): void {

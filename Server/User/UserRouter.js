@@ -41,8 +41,8 @@ router.get('/history', (req, res) => {
     user.getLastOperations(req, res);
 });
 
-router.get('/wallet')
-
+// Returns the wallet of the use
+router.get('/wallet');
 
 router.get('/test', (req, res) => {
     user.test(req, res);

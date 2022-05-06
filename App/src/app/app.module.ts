@@ -23,6 +23,7 @@ import { HistoryComponent } from './modules/History/history.component';
 import { AccountInfo } from './modules/account-info/account-info.component';
 import { Dashboard } from './modules/dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
+import { ChangePassword } from './modules/changepass/changepass.component';
 
 @NgModule({
   declarations: [
@@ -35,11 +36,13 @@ import { RouterModule } from '@angular/router';
     CandlestickComponent,
     HistoryComponent,
     AccountInfo,
-    Dashboard
+    Dashboard,
+    ChangePassword
   ],
   imports: [
     RouterModule.forRoot([
       { path: 'dashboard', component: Dashboard },
+      { path: 'changePassword', component: ChangePassword },
       { path: '', component: AuthComponent, pathMatch: 'full' },
       { path: '**', redirectTo: '', pathMatch: 'full' }
     ]),

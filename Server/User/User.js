@@ -220,7 +220,7 @@ class User
             return;
         }
 
-        const {  oldPassword, newPassword } = req.body;
+        let {  oldPassword, newPassword } = req.body;
         if (! oldPassword || !newPassword)
         {
             res.status(400).json({
@@ -230,7 +230,7 @@ class User
             return;
         }
 
-        oldPassword = this.checkPassword(oldPassword);
+        oldPassword = this.sanitizePassword(oldPassword);
         this.database.changePassword(userid, oldPassword, newPassword)
             .then((val) => {
                 if (val)

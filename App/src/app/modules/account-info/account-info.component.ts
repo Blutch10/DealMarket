@@ -1,4 +1,5 @@
 ﻿import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { IAccountInfo } from "src/app/interfaces/IAccountInfo";
 import { AccountInfoService } from "./account-info.service";
@@ -13,8 +14,11 @@ export class AccountInfo implements OnInit, OnDestroy {
     infos!: IAccountInfo;
     sub!: Subscription;
 
-    constructor(private acc: AccountInfoService) { }
+    constructor(private acc: AccountInfoService, private router: Router) { }
 
+    changePassword() : void {
+        this.router.navigate(['changePassword']);
+    }
 
     ngOnInit() : void {
         this.sub = this.acc.getInfos().subscribe({

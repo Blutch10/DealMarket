@@ -1,43 +1,48 @@
-<div id="auth-root">
-    <div id="auth-container">
+<div id="changepass-root">
+    <div id="changepass-container">
 
+      <h1 id="title">Password change</h1>
+      <div [class]="UI_message_state" *ngIf="UI_message_state !== 'NEUTRAL'">
+        {{ UI_message }}
+      </div>
         <mat-form-field class="form_input" appearance="outline">
             <input matInput
-              [formControl]="password1"
+              [formControl]="oldPass"
               autocomplete="off"
-              [type]="showPassword ? 'text' : 'password'"
-              placeholder="Password"
-              [(ngModel)]="password_" 
+              [type]="showOldPass ? 'text' : 'password'"
+              placeholder="Old Password"
+              [(ngModel)]="oldPassword" 
             />
             
-            <mat-icon id="visibility" matSuffix (click)="changeVisibility()">
-              {{showPassword ? "visibility_off" : "visibility"}}
+            <mat-icon id="visibility" matSuffix (click)="changeVisibility1()">
+              {{showOldPass ? "visibility_off" : "visibility"}}
             </mat-icon>
-            
-            <mat-hint
-              *ngIf="password1.value!=='' && authType!=='LOGIN'">{{password.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}} && 
-            </mat-hint>
           </mat-form-field>
 
         
           <mat-form-field class="form_input" appearance="outline">
             <input matInput
-              [formControl]="password2"
+              [formControl]="newPass"
               autocomplete="off"
-              [type]="showPassword ? 'text' : 'password'"
-              placeholder="Password"
-              [(ngModel)]="password_" 
+              [type]="showNewPass ? 'text' : 'password'"
+              placeholder="New Password"
+              [(ngModel)]="newPassword" 
             />
             
-            <mat-icon id="visibility" matSuffix (click)="changeVisibility()">
-              {{showPassword ? "visibility_off" : "visibility"}}
+            <mat-icon id="visibility" matSuffix (click)="changeVisibility2()">
+              {{showNewPass ? "visibility_off" : "visibility"}}
             </mat-icon>
             
-            <mat-hint
-              *ngIf="password2.value!=='' && authType!=='LOGIN'">{{password.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}} && 
-              *ngIf="password2.value !== password1.value"> {{'Not the same passords'}}
-            </mat-hint>
+            <!-- <div id=hint-container>
+              <mat-hint id="hint1"
+                *ngIf="newPass.value">{{newPass.value.length < 8 ? 'Weak Password.' : 'Strong Enough!'}}
+              </mat-hint>
+              <p *ngIf="newPass.value.length < 8 && newPass.value && newPass.value === oldPass.value"></p>
+              <mat-hint id="hint2"
+                *ngIf="newPass.value && newPass.value === oldPass.value"> {{'Not the same passwords'}}
+              </mat-hint>
+            </div> -->
           </mat-form-field>
-
+          <button id="submit_button" color="primary" mat-flat-button (click)="changePassword()">Submit</button>
     </div>
 </div>
