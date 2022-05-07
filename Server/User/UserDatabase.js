@@ -227,7 +227,6 @@ class UserDatabase {
                     resolve(undefined);
                 else {
                     let wallet = doc[0].wallet_;
-                    console.log(wallet);
                     resolve(wallet);
                 }
             });

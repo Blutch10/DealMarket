@@ -4,6 +4,6 @@ export interface IWalletResponse {
 
     status: number;
     message: string;
-    ops: IWallet[];
+    userWallet: Object;
     
 }
