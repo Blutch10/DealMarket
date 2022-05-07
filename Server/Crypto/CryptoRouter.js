@@ -35,7 +35,7 @@ router.get('/candle', (req, res) => {
     crypto.getCandle(req, res);
 });
 
-router.get('/coinCandles', (req, res) => {
+router.post('/coinCandles', (req, res) => {
     crypto.getCandlesSingleCoin(req, res);
 });
 

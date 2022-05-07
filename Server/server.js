@@ -69,7 +69,6 @@ app.use('/crypto', CryptoRouter);
  * Cronjobs *
  ************/
 
- cron.schedule('0 * * * *', () => {
+ /*cron.schedule('0 * * * *', () => {
     this.cryptoDB.updateDatabase();
-    console.log('\nCrypto database updated\.n'); // DEBUG
-  });
+  });*/

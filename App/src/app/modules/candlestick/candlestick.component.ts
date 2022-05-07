@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import * as moment from "moment";
-import { seriesData, seriesDataLinear } from "./ohlc";
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 
 import {
   ChartComponent,
@@ -14,6 +12,11 @@ import {
   ApexDataLabels,
   ApexStroke
 } from "ng-apexcharts";
+import { Subscription } from 'rxjs';
+import { ICandle } from 'src/app/interfaces/ICandle';
+import { IVolume } from 'src/app/interfaces/IVolume';
+import { ICandleResponse } from 'src/app/interfaces/Responses/ICandleResponse';
+import { CandleStickService } from './candlestick.service';
 
 
 
@@ -34,17 +37,86 @@ export type ChartOptions = {
   templateUrl: './candlestick.component.html',
   styleUrls: ['./candlestick.component.css']
 })
-export class CandlestickComponent {
-  @ViewChild("chart") chart: ChartComponent | any;
+export class CandlestickComponent implements OnInit, OnDestroy, OnChanges {
+
+  @ViewChild("chart", { static: false }) chart: ChartComponent | any;
   public chartCandleOptions: Partial<ChartOptions> | any;
   public chartBarOptions: Partial<ChartOptions> | any;
   
-  constructor() {
+  seriesData!: ICandle[];
+  seriesDataLinear!: IVolume[];
+  sub!: Subscription;
+  symbol = "BTCUSDT";
+
+
+  ngOnInit(): void {
+    this.sub = this.candle.getCandles(this.symbol).subscribe({
+      next: candles => {
+        let parsing: [ICandle[], IVolume[]] = this.parseResponse(candles);
+        this.seriesData = parsing[0];
+        this.seriesDataLinear = parsing[1];
+        this.updateSeries();
+      },
+      error: err => console.log(err)
+    });
+  }
+
+
+  ngOnDestroy(): void {
+      this.sub.unsubscribe();
+  }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+      // Récupère symbole de la crypto et le met this.symbol
+      // this.sub = comme au-dessus
+
+  }
+
+  parseResponse(res: ICandleResponse) : [ICandle[], IVolume[]]
+  {
+    let c: ICandle[] = [];
+    let v: IVolume[] = [];
+    for (let element of res.candles)
+    {
+      let addC: ICandle = {
+        x: element.candle.openTime,
+        y: [ element.candle.open, element.candle.high, element.candle.low, element.candle.close ]
+      }
+      c.push(addC);
+      
+      let addV: IVolume = {
+        x: element.candle.openTime,
+        y: element.volume
+      }
+      v.push(addV);
+    }
+    let result: [ICandle[], IVolume[]] = [c, v];
+    return result;
+  }
+
+  
+  /**
+   * Method to call to update the charts, after the modification of data series.
+   */
+  public updateSeries() {
+    this.chartCandleOptions.series = [{
+      name: "candle",
+      data: this.seriesData
+    }];
+    this.chartBarOptions.series = [{
+      name: "volume",
+      data: this.seriesDataLinear
+    }]
+  }
+
+
+  constructor(private candle: CandleStickService) {
     this.chartCandleOptions = {
       series: [
         {
           name: "candle",
-          data: seriesData
+          data: this.seriesData
         }
       ],
       chart: {
@@ -94,7 +166,7 @@ export class CandlestickComponent {
           enabled: false
         },
         title: {
-          text: "BTC/USDT",
+          text: this.symbol,
           rotate: -90,
           offsetX: 0,
           offsetY: 0,
@@ -105,6 +177,9 @@ export class CandlestickComponent {
               fontWeight: 600,
               cssClass: 'apexcharts-yaxis-title',
           },
+        },
+        noData: {
+          text: 'Loading...'
         }
       }
     };
@@ -113,7 +188,7 @@ export class CandlestickComponent {
       series: [
         {
           name: "volume",
-          data: seriesDataLinear
+          data: this.seriesDataLinear
         }
       ],
       chart: {

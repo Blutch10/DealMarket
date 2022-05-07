@@ -466,11 +466,29 @@ class CryptoDatabase
     getCandlesSingleCoin(symbol_)
     {
         return new Promise((resolve, reject) => {
+            let numberToDisplay = 500;  // Fait varier lenombre de bougies renvoyées (max 500)
             this.client.candles({ symbol: symbol_, interval: '1h' })
                 .then((val) => {
-                    resolve(val);
+                    let result = [];
+                    let len = val.length;
+                    val = val.slice(-numberToDisplay);
+                    for (let element of val)
+                    {
+                        let toAdd = {
+                            candle: {
+                                openTime: new Date(element.openTime),
+                                open: element.open,
+                                high: element.high,
+                                low: element.low,
+                                close: element.close,
+                            },
+                            volume: element.volume
+                        };
+                        result.push(toAdd);
+                    }
+                    resolve(result);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => reject(err));
         })
     }
 }

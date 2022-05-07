@@ -1,0 +1,35 @@
+﻿#trading-root {
+    height: 100%;
+    background: darkgray;
+}
+
+#wallet {
+    width: 500px;
+    height: 100%;
+    background: #d2d2d2;
+    float:left;
+
+    font-family: Quicksand, sans-serif !important;
+    box-shadow: 0 0 30px darkgrey;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#candlestick {
+    width: calc(100% - 580px);
+    height: 100%;
+    background: #b8cbde;
+    float:left;
+    font-family: Quicksand, sans-serif !important;
+    box-shadow: 0 0 30px darkgrey;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#wallet, #candlestick {
+    height: 100%;
+}

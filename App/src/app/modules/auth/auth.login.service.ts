@@ -25,7 +25,8 @@ export class AuthService {
             next: (data) => {
                 if (data.status === 200 && data.message === 'Successful authentication') {
                     this.isAuthenticated = true;
-                    this.router.navigate(['dashboard']);
+                    //this.router.navigate(['dashboard']);
+                    this.router.navigate(['trading']);
                 }
             },
             error: (error) => {
