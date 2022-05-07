@@ -456,6 +456,23 @@ class CryptoDatabase
             });
         })
     }
+
+
+    /**
+     * Retrieves fromthe API the entire history of candles for a symbol.
+     * @param {String} symbol_ The symbol <hich we want to retrieve the history.
+     * @returns A promise which resolves in an array of candles if successful and in error otherwise.
+     */
+    getCandlesSingleCoin(symbol_)
+    {
+        return new Promise((resolve, reject) => {
+            this.client.candles({ symbol: symbol_, interval: '1h' })
+                .then((val) => {
+                    resolve(val);
+                })
+                .catch((err) => console.log(err));
+        })
+    }
 }
 
 exports.default = CryptoDatabase;

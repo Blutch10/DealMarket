@@ -188,6 +188,51 @@ class Crypto
                 });
             });
     }
+
+
+    /**
+     * Retrieves the entie history of candles from API for a single coin.
+     * @param {Reques} req The user's request.
+     * @param {Response} res The server's response.
+     */
+    getCandlesSingleCoin(req, res)
+    {
+        // Prevents non-authenticated user to spam the API.
+        let userid = req.session.userid;
+        if (! userid)
+        {
+            res.status(401).json({
+                status: 401,
+                message: "Operations needs to be logged in"
+            });
+            return;
+        }
+
+        const { symbol } = req.body;
+        if (! symbol)
+        {
+            res.status(400).json({
+                status: 400,
+                message: "Invalid form"
+            });
+            return;
+        }
+
+        this.cryptoDB.getCandlesSingleCoin(symbol)
+            .then((val) => {
+                res.status(200).json({
+                    status: 200,
+                    message: "Candles retrieved",
+                    candles: val
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    status: 500,
+                    message: "Server internal error"
+                });
+            });
+    }
 }
 
 exports.default = Crypto;

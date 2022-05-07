@@ -35,4 +35,8 @@ router.get('/candle', (req, res) => {
     crypto.getCandle(req, res);
 });
 
+router.get('/coinCandles', (req, res) => {
+    crypto.getCandlesSingleCoin(req, res);
+});
+
 module.exports = router;
