@@ -25,6 +25,8 @@ import { Dashboard } from './modules/dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { ChangePassword } from './modules/changepass/changepass.component';
 import { TradingComponent } from './modules/trading/trading.component';
+import { ResearchComponent } from './modules/research/research.component';
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { TradingComponent } from './modules/trading/trading.component';
     AccountInfo,
     Dashboard,
     ChangePassword,
-    TradingComponent
+    TradingComponent,
+    ResearchComponent,
   ],
   imports: [
     RouterModule.forRoot([
@@ -59,7 +62,8 @@ import { TradingComponent } from './modules/trading/trading.component';
     ReactiveFormsModule,
     HttpClientModule,
     NgxChartsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent],
