@@ -42,76 +42,25 @@ export type ChartOptions = {
   templateUrl: './candlestick.component.html',
   styleUrls: ['./candlestick.component.css']
 })
-export class CandlestickComponent implements OnInit, OnDestroy, OnChanges {
+export class CandlestickComponent implements OnInit, OnDestroy {
+
+//#######################
+//#       Attributes    #
+//#######################
 
   @ViewChild("chart", { static: false }) chart: ChartComponent | any;
   public chartCandleOptions: Partial<ChartOptions> | any;
   public chartBarOptions: Partial<ChartOptions> | any;
-
-  filter(val: string): string[] {
-    return this.options.filter(option =>
-      option.toLowerCase().indexOf(val.toLowerCase()) === 0);
-  }
+  
+  
   seriesData!: ICandle[];
   seriesDataLinear!: IVolume[];
   sub!: Subscription;
   symbol = "BTCUSDT";
-
-  ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(val => this.filter(val))
-    );
-    this.sub = this.candle.getCandles(this.symbol).subscribe({
-      next: candles => {
-        let parsing: [ICandle[], IVolume[]] = this.parseResponse(candles);
-        this.seriesData = parsing[0];
-        this.seriesDataLinear = parsing[1];
-        this.updateSeries();
-      },
-      error: err => console.log(err)
-    });
-  }
-
-
-  ngOnDestroy(): void {
-      this.sub.unsubscribe();
-  }
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-      // Récupère symbole de la crypto et le met this.symbol
-      // this.sub = comme au-dessus
-
-  }
-
-  parseResponse(res: ICandleResponse) : [ICandle[], IVolume[]]
-  {
-    let c: ICandle[] = [];
-    let v: IVolume[] = [];
-    for (let element of res.candles)
-    {
-      let addC: ICandle = {
-        x: element.candle.openTime,
-        y: [ element.candle.open, element.candle.high, element.candle.low, element.candle.close ]
-      }
-      c.push(addC);
-      
-      let addV: IVolume = {
-        x: element.candle.openTime,
-        y: element.volume
-      }
-      v.push(addV);
-    }
-    let result: [ICandle[], IVolume[]] = [c, v];
-    return result;
-  }
-
-    
+  
   myControl: FormControl = new FormControl();
 
-  options = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'NEOUSDT', 'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRPUSDT', 'EOSUSDT', 'TUSDUSDT', 'IOTAUSDT', 'XLMUSDT', 'ONTUSDT',
+  coins = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'NEOUSDT', 'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRPUSDT', 'EOSUSDT', 'TUSDUSDT', 'IOTAUSDT', 'XLMUSDT', 'ONTUSDT',
   'TRXUSDT', 'ETCUSDT', 'ICXUSDT', 'NULSUSDT', 'VETUSDT', 'USDCUSDT', 'LINKUSDT', 'WAVESUSDT', 'ONGUSDT', 'HOTUSDT', 'ZILUSDT', 'ZRXUSDT', 'FETUSDT', 'BATUSDT',
   'XMRUSDT', 'ZECUSDT', 'IOSTUSDT', 'CELRUSDT', 'DASHUSDT', 'OMGUSDT', 'THETAUSDT', 'ENJUSDT', 'MITHUSDT', 'MATICUSDT', 'ATOMUSDT', 'TFUELUSDT', 'ONEUSDT',
   'FTMUSDT', 'ALGOUSDT', 'GTOUSDT', 'DOGEUSDT', 'DUSKUSDT', 'ANKRUSDT', 'WINUSDT', 'COSUSDT', 'COCOSUSDT', 'MTLUSDT', 'TOMOUSDT', 'PERLUSDT', 'DENTUSDT', 'MFTUSDT',
@@ -135,16 +84,78 @@ export class CandlestickComponent implements OnInit, OnDestroy, OnChanges {
   'MOVRUSDT', 'CITYUSDT', 'ENSUSDT', 'KP3RUSDT', 'QIUSDT', 'PORTOUSDT', 'POWRUSDT', 'VGXUSDT', 'JASMYUSDT', 'AMPUSDT', 'PLAUSDT', 'PYRUSDT', 'RNDRUSDT', 'ALCXUSDT',
   'SANTOSUSDT', 'MCUSDT', 'BICOUSDT', 'FLUXUSDT', 'FXSUSDT', 'VOXELUSDT', 'HIGHUSDT', 'CVXUSDT', 'PEOPLEUSDT', 'OOKIUSDT', 'SPELLUSDT', 'USTUSDT', 'JOEUSDT',
   'ACHUSDT', 'IMXUSDT', 'GLMRUSDT', 'LOKAUSDT', 'SCRTUSDT', 'API3USDT', 'BTTCUSDT', 'ACAUSDT', 'ANCUSDT', 'XNOUSDT', 'WOOUSDT', 'ALPINEUSDT', 'TUSDT', 'ASTRUSDT',
-  'NBTUSDT', 'GMTUSDT', 'KDAUSDT', 'APEUSDT', 'BSWUSDT', 'BIFIUSDT', 'MULTIUSDT', 'STEEMUSDT'];
+  'NBTUSDT', 'GMTUSDT', 'KDAUSDT', 'APEUSDT', 'BSWUSDT', 'BIFIUSDT', 'MULTIUSDT', 'STEEMUSDT'].sort();
 
-  filteredOptions: Observable<string[]> | undefined;
+  filteredCoins = this.coins.filter((word) => word !== this.symbol); // List of filtered coins
+  private _filter: string = ""; // The substring to filter the coins
 
+
+//#######################
+//#       Methods       #
+//#######################
+
+  /**
+   * Getter on the private attribute _filter.
+   */
+  get filter() : string {
+    return this._filter;
+  }
+
+  /**
+   * Setter on the private attribute _filter. Called each time
+   * its value is updated.
+   */
+  set filter(value: string) {
+    this._filter = value;
+    this.filteredCoins = this.performFilter();
+  }
+
+
+  /**
+   * Performs the filter action and updates the filtered list of coins.
+   * @return A list of coin symbols which contain the substring.
+   */
+  performFilter() : string[] {
+    if (this.filter === "")
+      return this.coins.filter((word) => word !== this.symbol);
+    return this.coins.filter((word) => word.toLowerCase().includes(this.filter.toLowerCase()) && word !== this.symbol); 
+  }
+
+
+  /**
+   * Parses the server's response to extract the data from it and put it
+   * in the appropriate format for the chart.
+   * @param res The server's response
+   * @returns An array of arrays. First element is the data serie for the candles, second element is the data
+   * serie for the volumes.
+   */
+  parseResponse(res: ICandleResponse) : [ICandle[], IVolume[]]
+  {
+    let c: ICandle[] = [];
+    let v: IVolume[] = [];
+    for (let element of res.candles)
+    {
+      let addC: ICandle = {
+        x: element.candle.openTime,
+        y: [ element.candle.open, element.candle.high, element.candle.low, element.candle.close ]
+      }
+      c.push(addC);
+      
+      let addV: IVolume = {
+        x: element.candle.openTime,
+        y: element.volume
+      }
+      v.push(addV);
+    }
+    let result: [ICandle[], IVolume[]] = [c, v];
+    return result;
+  }
 
   
   /**
    * Method to call to update the charts, after the modification of data series.
    */
-  public updateSeries() {
+  public updateSeries() : void {
     this.chartCandleOptions.series = [{
       name: "candle",
       data: this.seriesData
@@ -153,6 +164,97 @@ export class CandlestickComponent implements OnInit, OnDestroy, OnChanges {
       name: "volume",
       data: this.seriesDataLinear
     }]
+  }
+
+
+  /**
+   * Update the chart options to change the the y-axis title accordingly to the visualized coin.
+   */
+  public updateOptions() : void {
+    this.chartCandleOptions.yaxis = {
+      axisBorder: {
+        show: true,
+        color: '#B8B0BC',
+        offsetX: 3,
+        offsetY: 1
+      },
+      tooltip: {
+        enabled: false
+      },
+      title: {
+        text: this.symbol.slice(0, -4),
+        rotate: -90,
+        offsetX: 0,
+        offsetY: 0,
+        style: {
+color: undefined,
+fontSize: '12px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 600,
+            cssClass: 'apexcharts-yaxis-title',
+        },
+      },
+      noData: {
+        text: 'Loading...'
+      }
+    }
+  }
+
+
+  /**
+   * Method called when the value in the dropdown menu is changed. Updates the chart accordingly.
+   */
+  changeCoin() : void {
+    console.log("symbol : ", this.symbol);
+    this.sub = this.candle.getCandles(this.symbol).subscribe({
+      next: candles => {
+        let parsing: [ICandle[], IVolume[]] = this.parseResponse(candles);
+        this.seriesData = parsing[0];
+        this.seriesDataLinear = parsing[1];
+        this.filter = "";
+        this.updateSeries();
+        this.updateOptions();
+      },
+      error: err => console.log(err)
+    });
+  }
+
+
+  /**
+   * Method to use when clicking on one of the options in the datalist tag. Updates the coin symbol.
+   * @param value The coin symbol.
+   */
+  optionFunc(value: string) : void {
+    this.symbol = value;
+    this.changeCoin();
+  }
+
+
+
+//#######################
+//#   Lifecycle Hooks   #
+//#######################
+
+  ngOnInit(): void {
+    // this.filteredOptions = this.myControl.valueChanges
+    // .pipe(
+    //   startWith(''),
+    //   map(val => this.filter(val))
+    // );
+    this.sub = this.candle.getCandles(this.symbol).subscribe({
+      next: candles => {
+        let parsing: [ICandle[], IVolume[]] = this.parseResponse(candles);
+        this.seriesData = parsing[0];
+        this.seriesDataLinear = parsing[1];
+        this.updateSeries();
+      },
+      error: err => console.log(err)
+    });
+  }
+
+
+  ngOnDestroy(): void {
+      this.sub.unsubscribe();
   }
 
 
@@ -211,7 +313,7 @@ export class CandlestickComponent implements OnInit, OnDestroy, OnChanges {
           enabled: false
         },
         title: {
-          text: this.symbol,
+          text: this.symbol.slice(0, -4),
           rotate: -90,
           offsetX: 0,
           offsetY: 0,

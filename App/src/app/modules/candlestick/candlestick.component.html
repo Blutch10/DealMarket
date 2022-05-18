@@ -22,14 +22,18 @@
       [plotOptions]="chartBarOptions.plotOptions"
     ></apx-chart>
   </div>
-  <form class="form">
-    <mat-form-field class="full_width" appearance="fill">
-      <input type="text" placeholder="Coin" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
+  <div id="dropdown">
+    <span>  
+      <select [(ngModel)]="symbol" (change)="changeCoin()">
+          <option [value]="symbol" selected="selected">{{ symbol.slice(0, -4) }}</option>
+          <option *ngFor="let coin of filteredCoins" [value]="coin">
+            {{ coin.slice(0, -4) }}
+          </option>
+      </select>
+    </span>
+    <span>
+      <input type="search" [(ngModel)]="filter" (change)="performFilter()" placeholder="Search">
+    </span>
+  </div>
+
 </div>
