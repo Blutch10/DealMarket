@@ -27,6 +27,7 @@ import { TradingComponent } from './modules/trading/trading.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { BuySell } from './modules/buy-sell/buy-sell.component';
 import { SidebarComponent } from './modules/sidebar/sidebar.component';
+import { AuthenticatedGuard } from './modules/Guards/authenticated.guard';
 
 @NgModule({
   declarations: [
@@ -46,9 +47,9 @@ import { SidebarComponent } from './modules/sidebar/sidebar.component';
   ],
   imports: [
     RouterModule.forRoot([
-      { path: 'trading', component: TradingComponent },
-      { path: 'dashboard', component: Dashboard },
-      { path: 'changePassword', component: ChangePassword },
+      { path: 'trading', canActivate: [AuthenticatedGuard], component: TradingComponent },
+      { path: 'dashboard', canActivate: [AuthenticatedGuard], component: Dashboard },
+      { path: 'changePassword', canActivate: [AuthenticatedGuard], component: ChangePassword },
       { path: '', component: AuthComponent, pathMatch: 'full' },
       { path: '**', redirectTo: '', pathMatch: 'full' }
     ], { onSameUrlNavigation: 'reload' }),

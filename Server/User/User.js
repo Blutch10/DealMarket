@@ -187,6 +187,7 @@ class User
      */
     logout(req, res)
     {
+        req.session.userid = null;
         req.session.destroy((err) => { 
             if (err)
                 res.status(500).json({
