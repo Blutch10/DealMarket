@@ -30,6 +30,14 @@
     flex-direction: column;
 }
 
+#sidebar {
+    opacity: 0
+}
+
+#sidebar:hover {
+    opacity: 100;
+}
+
 #wallet, #candlestick {
     height: 100%;
 }

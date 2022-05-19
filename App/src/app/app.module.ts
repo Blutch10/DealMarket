@@ -14,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphComponent } from './modules/graph/graph.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { ProPertComponent } from './modules/pro-pert/pro-pert.component';
 import { NgxChartsModule }from '@swimlane/ngx-charts';
 import { CandlestickComponent } from './modules/candlestick/candlestick.component';
@@ -27,6 +26,7 @@ import { ChangePassword } from './modules/changepass/changepass.component';
 import { TradingComponent } from './modules/trading/trading.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { BuySell } from './modules/buy-sell/buy-sell.component';
+import { SidebarComponent } from './modules/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,6 @@ import { BuySell } from './modules/buy-sell/buy-sell.component';
     PersonComponent,
     AuthComponent,
     GraphComponent,
-    SidebarComponent,
     ProPertComponent,
     CandlestickComponent,
     HistoryComponent,
@@ -42,7 +41,8 @@ import { BuySell } from './modules/buy-sell/buy-sell.component';
     Dashboard,
     ChangePassword,
     TradingComponent,
-    BuySell
+    BuySell,
+    SidebarComponent
   ],
   imports: [
     RouterModule.forRoot([

@@ -15,3 +15,11 @@
 #history {
     padding-top: 2%;
 }
+
+#sidebar {
+    opacity: 0;
+}
+
+#sidebar:hover {
+    opacity: 100;
+}

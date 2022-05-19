@@ -9,7 +9,7 @@ import { IWalletResponse } from "src/app/interfaces/Responses/IWalletResponse";
 })
 export class ProPertService {
     
-    readonly ROOT_URL = 'http://127.0.0.1:8080/crypto/';
+    readonly ROOT_URL = 'http://127.0.0.1:8080/crypto';
 
     constructor(private http : HttpClient) { }
 

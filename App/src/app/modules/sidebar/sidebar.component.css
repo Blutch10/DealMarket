@@ -1,4 +1,6 @@
 .sidebar-root {
+    left: 0;
+    top: 0;
     position: fixed;
     min-height: 100%;
     padding: 0 15px;
@@ -8,9 +10,21 @@
     font-weight: bold;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
   
+  .first-column {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
   .sidebar-root > .first-column > * {
     margin-top: 20px;
   }
   
+  .under-column {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
