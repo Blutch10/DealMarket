@@ -25,8 +25,8 @@ import { Dashboard } from './modules/dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { ChangePassword } from './modules/changepass/changepass.component';
 import { TradingComponent } from './modules/trading/trading.component';
-//import { ResearchComponent } from './modules/research/research.component';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { BuySell } from './modules/buy-sell/buy-sell.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +41,8 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     AccountInfo,
     Dashboard,
     ChangePassword,
-    TradingComponent//,
-    //ResearchComponent
+    TradingComponent,
+    BuySell
   ],
   imports: [
     RouterModule.forRoot([
@@ -51,7 +51,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
       { path: 'changePassword', component: ChangePassword },
       { path: '', component: AuthComponent, pathMatch: 'full' },
       { path: '**', redirectTo: '', pathMatch: 'full' }
-    ]),
+    ], { onSameUrlNavigation: 'reload' }),
     BrowserModule,
     BrowserAnimationsModule,
     MatFormFieldModule,

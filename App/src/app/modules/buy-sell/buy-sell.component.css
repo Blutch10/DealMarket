@@ -1,0 +1,26 @@
+#root-buy-sell {
+    margin-top: 10px;
+}
+
+#UI_msg {
+    margin-left: 0px;
+}
+
+.ERROR {
+    background: #fc5a32;
+    box-shadow: 1px 1px 1px #aaaaaa;
+  }
+  
+  .SUCCESS {
+    background: #8dfc32;
+    box-shadow: 1px 1px 1px #aaaaaa;
+    border: greenyellow solid 1px;
+  }
+  
+  .ERROR, .SUCCESS {
+    width: fit-content;
+    margin-left: 37px;
+    margin-bottom: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }

@@ -22,6 +22,7 @@ import { ICandle } from 'src/app/interfaces/ICandle';
 import { IVolume } from 'src/app/interfaces/IVolume';
 import { ICandleResponse } from 'src/app/interfaces/Responses/ICandleResponse';
 import { CandleStickService } from './candlestick.service';
+import { RefreshService } from '../buy-sell/candlestick&pro-pert.service';
 
 
 
@@ -53,13 +54,14 @@ export class CandlestickComponent implements OnInit, OnDestroy {
   public chartBarOptions: Partial<ChartOptions> | any;
   
   
-  seriesData!: ICandle[];
-  seriesDataLinear!: IVolume[];
-  sub!: Subscription;
-  symbol = "BTCUSDT";
+  seriesData!: ICandle[]; // The data for the candlestick chart
+  seriesDataLinear!: IVolume[]; // The data for the volume chart
+  sub!: Subscription; // The subscription to the Observable over the server's response
+  symbol = "BTCUSDT"; // The symbol of the current coin
   
   myControl: FormControl = new FormControl();
 
+  // The list of all coins (quicker to put it here than getting it from the server)
   coins = ['BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'NEOUSDT', 'LTCUSDT', 'QTUMUSDT', 'ADAUSDT', 'XRPUSDT', 'EOSUSDT', 'TUSDUSDT', 'IOTAUSDT', 'XLMUSDT', 'ONTUSDT',
   'TRXUSDT', 'ETCUSDT', 'ICXUSDT', 'NULSUSDT', 'VETUSDT', 'USDCUSDT', 'LINKUSDT', 'WAVESUSDT', 'ONGUSDT', 'HOTUSDT', 'ZILUSDT', 'ZRXUSDT', 'FETUSDT', 'BATUSDT',
   'XMRUSDT', 'ZECUSDT', 'IOSTUSDT', 'CELRUSDT', 'DASHUSDT', 'OMGUSDT', 'THETAUSDT', 'ENJUSDT', 'MITHUSDT', 'MATICUSDT', 'ATOMUSDT', 'TFUELUSDT', 'ONEUSDT',
@@ -86,8 +88,11 @@ export class CandlestickComponent implements OnInit, OnDestroy {
   'ACHUSDT', 'IMXUSDT', 'GLMRUSDT', 'LOKAUSDT', 'SCRTUSDT', 'API3USDT', 'BTTCUSDT', 'ACAUSDT', 'ANCUSDT', 'XNOUSDT', 'WOOUSDT', 'ALPINEUSDT', 'TUSDT', 'ASTRUSDT',
   'NBTUSDT', 'GMTUSDT', 'KDAUSDT', 'APEUSDT', 'BSWUSDT', 'BIFIUSDT', 'MULTIUSDT', 'STEEMUSDT'].sort();
 
-  filteredCoins = this.coins.filter((word) => word !== this.symbol); // List of filtered coins
   private _filter: string = ""; // The substring to filter the coins
+  filteredCoins = this.coins.filter((word) => word !== this.symbol); // List of filtered coins
+  
+
+
 
 
 //#######################
@@ -229,7 +234,13 @@ fontSize: '12px',
     this.changeCoin();
   }
 
-
+  
+  /**
+   * Sends a notification to all Observers (for now only pro-pert component) for them to refresh their content.
+   */
+  refreshPieChart() : void {
+    this.refresh.sendUpdate();
+  }
 
 //#######################
 //#   Lifecycle Hooks   #
@@ -258,7 +269,7 @@ fontSize: '12px',
   }
 
 
-  constructor(private candle: CandleStickService) {
+  constructor(private candle: CandleStickService, private refresh: RefreshService) {
     this.chartCandleOptions = {
       series: [
         {

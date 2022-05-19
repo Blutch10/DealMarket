@@ -1,0 +1,19 @@
+<div id="root-buy-sell">
+    <div id="button_container">
+        <div>
+            <button id="Buy" (click)="buyCoin()">
+                Buy
+            </button>
+            <input type="number" value="0" [(ngModel)]="quantityBuy" min="0">
+        </div>
+        <div>
+            <button id="Sell" (click)="sellCoin()">
+                Sell
+            </button>
+            <input type="number" value="0" [(ngModel)]="quantitySell" min="0">
+        </div>
+    </div>
+    <div id ="UI_msg" [class]="UI_Message_state" *ngIf="UI_Message_state !== 'NEUTRAL'">
+        {{ UI_Message }}
+    </div>
+</div>

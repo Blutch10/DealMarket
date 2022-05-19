@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ProPertService} from './pro-pert.service';
 import { Subscription } from "rxjs";
 import { IWallet } from "../../interfaces/IWallet";
+import { RefreshService } from '../buy-sell/candlestick&pro-pert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pro-pert',
@@ -10,10 +12,10 @@ import { IWallet } from "../../interfaces/IWallet";
 })
 export class ProPertComponent implements OnInit, OnDestroy {
 
-
   wallet: IWallet[] = [];
   view: IWallet[] = [];
   sub!: Subscription;
+  refreshSub! : Subscription;
 
   // options
   gradient: boolean = true;
@@ -26,7 +28,7 @@ export class ProPertComponent implements OnInit, OnDestroy {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  constructor(private proPert : ProPertService) { }
+  constructor(private proPert : ProPertService, private refresh: RefreshService, private router: Router) { }
 
   ngOnInit() : void 
   {
@@ -35,6 +37,14 @@ export class ProPertComponent implements OnInit, OnDestroy {
         this.wallet = this.parseResponse(res.userWallet);
       },
       error: err => console.log(err)
+    });
+    this.refreshSub = this.refresh.getUpdate().subscribe((notif) => { // To update the component from buy-sell
+      this.sub = this.proPert.getWallet().subscribe({
+        next: res => {
+          this.wallet = this.parseResponse(res.userWallet);
+        },
+        error: err => console.log(err)
+      });
     });
   }
 
@@ -51,7 +61,7 @@ export class ProPertComponent implements OnInit, OnDestroy {
     for (const [k, v] of Object.entries(res))
     {
       let entry: IWallet = {
-        name: k,
+        name: k.slice(0, -4),
         value: v
       };
       result.push(entry);
@@ -62,6 +72,7 @@ export class ProPertComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() : void {
       this.sub.unsubscribe();
+      this.refreshSub.unsubscribe();
   }
 
 
