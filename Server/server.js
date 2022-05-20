@@ -61,7 +61,6 @@ app.use('/user', UserRouter);
 
 // Crypto routes
 const CryptoRouter = require('./Crypto/CryptoRouter');
-const { connect } = require('./User/UserRouter.js');
 app.use('/crypto', CryptoRouter);
 
 

@@ -491,6 +491,23 @@ class CryptoDatabase
                 .catch((err) => reject(err));
         })
     }
+
+    /**
+     * Get the latest price for the given symbol.
+     * @param {String} symbol_ The symbol to get the price for.
+     * @returns A promise which resolves in the price in case of success and in error otherwise.
+     */
+    getInstantPrice(symbol_)
+    {
+        return new Promise((resolve, reject) => {
+            this.client.prices( {symbol: symbol_} )
+                .then((res) => {
+
+                    resolve(res[symbol_]);
+                })
+                .catch((err) => reject(err));
+        });
+    }
 }
 
 exports.default = CryptoDatabase;

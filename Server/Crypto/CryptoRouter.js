@@ -31,12 +31,18 @@ router.post('/sell', (req, res) => {
     crypto.sellCoin(req,res);
 });
 
+
 router.get('/candle', (req, res) => {
     crypto.getCandle(req, res);
 });
 
 router.post('/coinCandles', (req, res) => {
     crypto.getCandlesSingleCoin(req, res);
+});
+
+// Get a coin instant price
+router.post('/coinPrice', (req, res)  => {
+    crypto.getInstantPrice(req,res);
 });
 
 module.exports = router;

@@ -233,6 +233,52 @@ class Crypto
                 });
             });
     }
+
+
+    /**
+     * Gets the instant price for a single symbol.
+     * @param {Request} req The user's request.
+     * @param {Response} res The server's response.
+     */
+    getInstantPrice(req, res) 
+    {
+         // Prevents non-authenticated user to spam the API.
+         let userid = req.session.userid;
+         if (! userid)
+         {
+             res.status(401).json({
+                 status: 401,
+                 message: "Operations needs to be logged in"
+             });
+             return;
+         }
+
+         const { symbol } = req.body;
+         if (! symbol)
+         {
+             res.status(400).json({
+                 status: 400,
+                 message: "Invalid form"
+             });
+             return;
+         }
+
+         this.cryptoDB.getInstantPrice(symbol)
+            .then((val) => {
+                res.status(200).json({
+                    status: 200,
+                    message: "Price retrieved",
+                    price: val
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json({
+                    status: 500,
+                    message: "Server internal error"
+                });
+            })
+    }
 }
 
 exports.default = Crypto;
