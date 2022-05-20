@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { BuySell } from './modules/buy-sell/buy-sell.component';
 import { SidebarComponent } from './modules/sidebar/sidebar.component';
 import { AuthenticatedGuard } from './modules/Guards/authenticated.guard';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { AuthenticatedGuard } from './modules/Guards/authenticated.guard';
     HttpClientModule,
     NgxChartsModule,
     NgApexchartsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
