@@ -56,9 +56,11 @@ export class CandlestickComponent implements OnInit, OnDestroy {
   
   seriesData!: ICandle[]; // The data for the candlestick chart
   seriesDataLinear!: IVolume[]; // The data for the volume chart
-  sub!: Subscription; // The subscription to the Observable over the server's response
+  sub!: Subscription; // The subscription to the Observable over the server's response (for candles)
+  subPrice! : Subscription; // The subscription to the Observable over the server's response (for price)
   symbol = "BTCUSDT"; // The symbol of the current coin
-  
+  price = 0; // Instant price of the symbol
+  UI_priceStatus = "";  // Price color indicator
   myControl: FormControl = new FormControl();
 
   // The list of all coins (quicker to put it here than getting it from the server)
@@ -247,17 +249,25 @@ fontSize: '12px',
 //#######################
 
   ngOnInit(): void {
-    // this.filteredOptions = this.myControl.valueChanges
-    // .pipe(
-    //   startWith(''),
-    //   map(val => this.filter(val))
-    // );
     this.sub = this.candle.getCandles(this.symbol).subscribe({
       next: candles => {
         let parsing: [ICandle[], IVolume[]] = this.parseResponse(candles);
         this.seriesData = parsing[0];
         this.seriesDataLinear = parsing[1];
         this.updateSeries();
+      },
+      error: err => console.log(err)
+    });
+
+    this.subPrice = this.candle.getPrice(this.symbol).subscribe({
+      next: val => {
+        this.price = val.price;
+        if (this.price >= this.seriesData[-1].y[3]) {       // If instant price is higher than last Close_candle 
+          this.UI_priceStatus = 'Green';                    // we set color UI_price to green
+        }
+        else if (this.price < this.seriesData[-1].y[3]) {   // If instant price is higher than last Close_candle
+          this.UI_priceStatus = 'Red';                      // we set color UI_price to red
+        }
       },
       error: err => console.log(err)
     });
