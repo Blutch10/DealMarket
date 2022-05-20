@@ -279,6 +279,50 @@ class Crypto
                 });
             })
     }
+
+
+    /**
+     * Gets the user's wallet value.
+     * @param {Request} req The user's request.
+     * @param {Response} res The user's response.
+     */
+    getWalletValue(req, res) 
+    {
+        let userid = req.session.userid;
+         if (! userid)
+         {
+             res.status(401).json({
+                 status: 401,
+                 message: "Operations needs to be logged in"
+             });
+             return;
+         }
+
+         const { wallet } = req.body;
+         if (! wallet)
+         {
+             res.status(400).json({
+                 status: 400,
+                 message: "Invalid form"
+             });
+             return;
+         }
+
+         this.cryptoDB.getWalletValue(wallet)
+            .then((val) => {
+                res.status(200).json({
+                    status: 200,
+                    message: "Value retrieved",
+                    price: val
+                });
+            })
+            .catch((err) => {
+                res.status(500).json({
+                    status: 500,
+                    message: "Server internal error"
+                })
+            });
+    }
 }
 
 exports.default = Crypto;

@@ -45,4 +45,9 @@ router.post('/coinPrice', (req, res)  => {
     crypto.getInstantPrice(req,res);
 });
 
+// Gets the wallet value
+router.post('walletValue', (req, res) => {
+    crypto.getWalletValue(req, res);
+});
+
 module.exports = router;

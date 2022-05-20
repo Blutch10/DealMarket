@@ -508,6 +508,23 @@ class CryptoDatabase
                 .catch((err) => reject(err));
         });
     }
+
+
+    getWalletValue(wallet)
+    {
+        return new Promise((resolve, reject) => {
+            let sum = 0;
+            let keys = Object.keys(wallet);
+            for (let coin in keys) {
+                this.client.prices({ symbol: coin })
+                    .then((res) => {
+                        sum += res * wallet[coin];
+                    })
+                    .catch((err) => reject(err));
+            }
+            resolve(sum);
+        });
+    }
 }
 
 exports.default = CryptoDatabase;
