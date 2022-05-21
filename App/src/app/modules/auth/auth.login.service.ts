@@ -16,15 +16,6 @@ export class AuthService {
 
     login(username_ : string, password_ : string) : void {
 
-        if (!username_) {
-            this.snackBar.open('Please enter a Username', '', { duration: 2000 });
-            return;
-        }
-        if (!password_) {
-            this.snackBar.open('Please enter a Password', '', { duration: 2000 });
-            return;
-        }
-
         const data = {
             username: username_,
             password: password_
