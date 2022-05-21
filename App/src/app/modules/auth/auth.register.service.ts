@@ -18,24 +18,29 @@ export class RegisterService {
 
         if (!username_) {
             this.snackBar.open('Please enter a Username', '', { duration: 2000 });
+            return;
         }
-        else if (!lastname_) {
+        if (!lastname_) {
             this.snackBar.open('Please enter a Lastname', '', { duration: 2000 });
+            return;
         }
-        else if (!firstname_) {
+        if (!firstname_) {
             this.snackBar.open('Please enter a Firstname', '', { duration: 2000 });
+            return;
         }
-        else if (!email_) {
+        if (!email_) {
             this.snackBar.open('Please enter an Email', '', { duration: 2000 });
+            return;
         }
-        else if (!email_.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
+        if (!email_.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
             this.snackBar.open('Please enter a valid Email!', '', { duration: 2000 });
             return;
         }
-        else if (!password_) {
+        if (!password_) {
             this.snackBar.open('Please enter a Password', '', { duration: 2000 });
+            return;
         }
-        else if (password_.length < 8) {
+        if (password_.length < 8) {
             this.snackBar.open('Consider using a stronger Password!', '', { duration: 2000 });
             return;
         }
