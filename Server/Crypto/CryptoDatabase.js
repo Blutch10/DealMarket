@@ -466,7 +466,7 @@ class CryptoDatabase
     getCandlesSingleCoin(symbol_)
     {
         return new Promise((resolve, reject) => {
-            let numberToDisplay = 500;  // Fait varier lenombre de bougies renvoyées (max 500)
+            let numberToDisplay = 500;  // Fait varier le nombre de bougies renvoyées (max 500)
             this.client.candles({ symbol: symbol_, interval: '1h' })
                 .then((val) => {
                     let result = [];
@@ -509,20 +509,26 @@ class CryptoDatabase
         });
     }
 
-
+    /**
+     * Retrieves the wallet current value.
+     * @param {Object} wallet The user's wallet with the same fomat as in the database.
+     * @returns A promise which resolves in the wallet valuein case of success and in error otherwise.
+     */
     getWalletValue(wallet)
     {
         return new Promise((resolve, reject) => {
             let sum = 0;
             let keys = Object.keys(wallet);
-            for (let coin in keys) {
-                this.client.prices({ symbol: coin })
-                    .then((res) => {
-                        sum += res * wallet[coin];
-                    })
-                    .catch((err) => reject(err));
-            }
-            resolve(sum);
+            this.client.prices()
+                .then((res) => {
+                    for (let coin of keys)
+                        sum += res[coin] * wallet[coin];
+                    resolve(sum);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    reject(err);
+                });
         });
     }
 }

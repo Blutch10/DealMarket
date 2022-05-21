@@ -1,0 +1,62 @@
+#root-stats
+{
+    font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 30px #d2d2d2;
+    padding: 50px;
+    margin: 50px 50px 0;
+    width: 100%;
+    border-radius: 20px;
+    margin: 0;
+    left: 0;
+    display: block;
+}
+
+#columns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#balance {
+    left: 0
+}
+
+#wallet {
+    margin-right: 75px;
+    margin-left: 75px;
+}
+
+#balance {
+    margin-left: 50px;
+}
+
+#performances {
+    right: 0;
+}
+
+h3 {
+    margin-left: 5px;
+    text-align: center;
+}
+
+img {
+    width: 60px;
+}
+
+.POSITIVE {
+    color: rgb(146, 219, 37);
+}
+
+.NEGATIVE {
+    color: red;
+}
+
+.column_element {
+    display: flex;
+    flex-direction: column;
+}
+
+.column-header {
+    display: flex;
+    flex-direction: row;
+}

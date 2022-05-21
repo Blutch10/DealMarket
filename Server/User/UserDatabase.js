@@ -40,7 +40,7 @@ class UserDatabase {
                     lastname_: lastname,
                     email_: email,
                     password_: hash,
-                    balance_: 10000000000000.0,
+                    balance_: 2500.0,
                     wallet_: {},
                     operations_: []
                 };
@@ -466,7 +466,7 @@ class UserDatabase {
     getAccountInfos(userid)
     {
         return new Promise((resolve, reject) => {
-            this.database.find({_id: userid}, {password_: 0, wallet_:0, operations_:0, _id:0}, (err, doc) => {
+            this.database.find({_id: userid}, {password_: 0, operations_:0, _id:0}, (err, doc) => {
                 if (err)
                     reject(err);
                 else if (doc.length !== 1)
@@ -477,31 +477,6 @@ class UserDatabase {
         });
     }
 
-
-    test(symbol_)
-    {
-        let currentDate = new Date();
-        let cDay = currentDate.getDate();
-        let cMonth = currentDate.getMonth();
-        let cYear = currentDate.getFullYear();
-        let cHour = currentDate.getHours();
-        let startTime_ = new Date(cYear, cMonth, cDay, cHour).valueOf();
-
-        this.client.candles({ symbol: symbol_, interval: '1h', startTime: startTime_ })
-            .then((candle) => {
-                candle = candle[0];
-                entry = {
-                    opentime: candle['openTime'],
-                    open: candle['open'],
-                    high: candle['high'],
-                    low: candle['low'],
-                    close: candle['close'],
-                    volume: candle['volume']
-                }
-                console.log(entry);
-            })
-            .catch((err) => console.log(err));
-    }
 }
 
 exports.default = UserDatabase;

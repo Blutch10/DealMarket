@@ -46,7 +46,7 @@ router.post('/coinPrice', (req, res)  => {
 });
 
 // Gets the wallet value
-router.post('walletValue', (req, res) => {
+router.post('/walletValue', (req, res) => {
     crypto.getWalletValue(req, res);
 });
 

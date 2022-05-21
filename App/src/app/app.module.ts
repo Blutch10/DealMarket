@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PersonComponent } from './modules/person/person.component';
 import { AuthComponent } from './modules/auth/auth.component';
@@ -28,7 +27,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { BuySell } from './modules/buy-sell/buy-sell.component';
 import { SidebarComponent } from './modules/sidebar/sidebar.component';
 import { AuthenticatedGuard } from './modules/Guards/authenticated.guard';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { StatsComponent } from './modules/stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +43,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     ChangePassword,
     TradingComponent,
     BuySell,
-    SidebarComponent
+    SidebarComponent,
+    StatsComponent
   ],
   imports: [
     RouterModule.forRoot([
@@ -66,7 +66,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     NgxChartsModule,
     NgApexchartsModule,
     MatAutocompleteModule,
-    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],

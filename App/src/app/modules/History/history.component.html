@@ -12,7 +12,7 @@
             <td><font [color]="action.type === 'BUY' ? 'red' : 'green'">{{ action.type }}</font></td>
             <td>{{ action.coin }}</td>
             <td>{{ action.quantity }}</td>
-            <td><font [color]="action.type === 'BUY' ? 'red' : 'green'">{{ action.balance_change }}$</font></td>
+            <td><font [color]="action.type === 'BUY' ? 'red' : 'green'">{{ action.balance_change | number }}$</font></td>
             <td>{{ action.date }}</td>
         </tr>
     </table>

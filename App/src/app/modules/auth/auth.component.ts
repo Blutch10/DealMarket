@@ -3,7 +3,6 @@ import { FormControl, FormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from './auth.login.service';
 import { RegisterService } from './auth.register.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-auth',
@@ -53,7 +52,7 @@ export class AuthComponent {
   authType: 'REGISTER' | 'LOGIN' = 'LOGIN';
 
   
-  constructor(private auth : AuthService, private reg : RegisterService, private snackBar: MatSnackBar) { }
+  constructor(private auth : AuthService, private reg : RegisterService) { }
 
 
   changeVisibility(): void {

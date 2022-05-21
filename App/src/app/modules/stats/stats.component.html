@@ -1,0 +1,38 @@
+<div id="root-stats">
+    <h1>Statistics</h1>
+    <div id="columns">
+        <div id="balance" class="column_element">
+            <div class="column-header">
+                <img id="balance-img" src="../../../assets/balance.png">
+                <h3>
+                    Balance
+                </h3>
+            </div>
+            <div>
+                {{ balance | number }}$
+            </div>
+        </div>
+        <div id="wallet" class="column_element">
+            <div class="column-header">
+                <img id="wallet-img" src="../../../assets/wallet.png">
+                <h3>
+                    Wallet value
+                </h3>
+            </div>
+            <div>
+                {{ wallet_value | number }}$
+            </div>
+        </div>
+        <div id="performances" class="column_element">
+            <div class="column-header">
+                <img id="performance-img" src="../../../assets/performance.png">
+                <h3>
+                    Performance
+                </h3>
+            </div>
+            <div [class]="performance_status">
+                {{ performance | number }}$ ({{performance_percentage > 0 ? '+' : ''}}{{ performance_percentage | number: '.0-3' }} %)
+            </div>
+        </div>
+    </div>
+</div>

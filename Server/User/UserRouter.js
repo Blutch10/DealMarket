@@ -44,10 +44,7 @@ router.get('/history', (req, res) => {
 // Returns the wallet of the use
 router.get('/wallet');
 
-router.get('/test', (req, res) => {
-    user.test(req, res);
-}); // DEBUG
-
+// Returns account infos
 router.get('/infos', (req, res) => {
     user.getAccountInfos(req, res);
 });
