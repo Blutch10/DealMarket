@@ -4,13 +4,13 @@
             <button id="Buy" (click)="buyCoin()">
                 Buy
             </button>
-            <input type="number" value="0" [(ngModel)]="quantityBuy" min="0">
+            <input type="number" value="0" [(ngModel)]="quantityBuy" min="0" step="0.1">
         </div>
         <div>
             <button id="Sell" (click)="sellCoin()">
                 Sell
             </button>
-            <input type="number" value="0" [(ngModel)]="quantitySell" min="0">
+            <input type="number" value="0" [(ngModel)]="quantitySell" min="0" step="0.1">
         </div>
     </div>
     <div id ="UI_msg" [class]="UI_Message_state" *ngIf="UI_Message_state !== 'NEUTRAL'">

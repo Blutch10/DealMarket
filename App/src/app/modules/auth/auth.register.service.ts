@@ -16,11 +16,27 @@ export class RegisterService {
 
     register(username_ : string, lastname_ : string, firstname_ : string, email_ : string, password_ : string) : void {
 
-        if (password_.length < 8) {
-            this.snackBar.open('Consider using a stronger password!', '', { duration: 2000 });
+        if (!username_) {
+            this.snackBar.open('Please enter a Username', '', { duration: 2000 });
+        }
+        else if (!lastname_) {
+            this.snackBar.open('Please enter a Lastname', '', { duration: 2000 });
+        }
+        else if (!firstname_) {
+            this.snackBar.open('Please enter a Firstname', '', { duration: 2000 });
+        }
+        else if (!email_) {
+            this.snackBar.open('Please enter an Email', '', { duration: 2000 });
+        }
+        else if (!email_.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
+            this.snackBar.open('Please enter a valid Email!', '', { duration: 2000 });
             return;
-        } else if (!email_.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)) {
-            this.snackBar.open('Please enter a valid email!', '', { duration: 2000 });
+        }
+        else if (!password_) {
+            this.snackBar.open('Please enter a Password', '', { duration: 2000 });
+        }
+        else if (password_.length < 8) {
+            this.snackBar.open('Consider using a stronger Password!', '', { duration: 2000 });
             return;
         }
 
