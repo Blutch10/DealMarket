@@ -18,7 +18,7 @@
             </div>
         </div>
         <div id="price" [class]="price_state">
-            <b>Price : </b> {{ price | number }}$
+            <b>Price : </b> {{ price | number }}$ ({{ price_percentage_evol > 0 ? '+' : ''}}{{ price_percentage_evol | number: '.0-3' }} %)
         </div>
     </div>
     

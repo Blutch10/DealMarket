@@ -119,7 +119,7 @@ export class AuthComponent implements OnDestroy {
         this.UI_Message = "Error : missing firstname";
         this.UI_Message_state = "ERROR";
       }
-      else if (this.firstname_ === "") {
+      else if (this.email_ === "") {
         this.UI_Message = "Error : missing email";
         this.UI_Message_state = "ERROR";
       }
@@ -149,7 +149,6 @@ export class AuthComponent implements OnDestroy {
         setTimeout(() => this.login(), 1500);
       },
       error: err => {
-        console.log(err);
         this.UI_Message = "Error : Couldn't create the user";
         this.UI_Message_state = "ERROR";
       }

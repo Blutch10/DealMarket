@@ -61,6 +61,7 @@ export class CandlestickComponent implements OnInit, OnDestroy {
   symbol = "BTCUSDT"; // The symbol of the current coin
   price = 0; // Instant price of the symbol
   UI_priceStatus = "";  // Price color indicator
+  price_percentage: number = 0; // Percentage of the price evolution
   myControl: FormControl = new FormControl();
 
   // The list of all coins (quicker to put it here than getting it from the server)
@@ -224,12 +225,13 @@ fontSize: '12px',
         this.subPrice = this.candle.getPrice(this.symbol).subscribe({
           next: val => {
             this.price = val.price;
-            if (this.price >= this.seriesData[this.seriesData.length - 1].y[3]) {       // If instant price is higher than last Close_candle 
+            if (this.price >= this.seriesData[this.seriesData.length - 2].y[3]) {       // If instant price is higher than last Close_candle 
               this.UI_priceStatus = 'Green';                    // we set color UI_price to green
             }
-            else if (this.price < this.seriesData[this.seriesData.length - 1].y[3]) {   // If instant price is higher than last Close_candle
+            else if (this.price < this.seriesData[this.seriesData.length - 2].y[3]) {   // If instant price is higher than last Close_candle
               this.UI_priceStatus = 'Red';                      // we set color UI_price to red
             }
+            this.price_percentage = ((this.price - this.seriesData[this.seriesData.length - 2].y[3]) / this.seriesData[this.seriesData.length - 2].y[3]) * 100;
           },
           error: err => console.log(err)
         });
@@ -270,12 +272,13 @@ fontSize: '12px',
         this.subPrice = this.candle.getPrice(this.symbol).subscribe({
           next: val => {
             this.price = val.price;
-            if (this.price >= this.seriesData[this.seriesData.length - 1].y[3]) {       // If instant price is higher than last Close_candle 
+            if (this.price >= this.seriesData[this.seriesData.length - 2].y[3]) {       // If instant price is higher than last Close_candle 
               this.UI_priceStatus = 'Green';                    // we set color UI_price to green
             }
-            else if (this.price < this.seriesData[this.seriesData.length - 1].y[3]) {   // If instant price is higher than last Close_candle
+            else if (this.price < this.seriesData[this.seriesData.length - 2].y[3]) {   // If instant price is higher than last Close_candle
               this.UI_priceStatus = 'Red';                      // we set color UI_price to red
             }
+            this.price_percentage = ((this.price - this.seriesData[this.seriesData.length - 2].y[3]) / this.seriesData[this.seriesData.length - 2].y[3]) * 100;
           },
           error: err => console.log(err)
         });

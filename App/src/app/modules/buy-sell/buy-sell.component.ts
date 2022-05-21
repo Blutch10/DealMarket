@@ -24,6 +24,8 @@ export class BuySell {
     price: number = 0;
     @Input()
     price_state: string = "Green";
+    @Input()
+    price_percentage_evol : number = 0;
 
     constructor(private bs: BuySellService, private refresh: RefreshService) {}
 
