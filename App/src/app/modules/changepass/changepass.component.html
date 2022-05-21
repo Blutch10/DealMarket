@@ -1,6 +1,9 @@
 <div id="changepass-root">
     <div id="changepass-container">
 
+      <div id="sidebar">
+        <app-sidebar></app-sidebar>
+      </div>
       <h1 id="title">Password change</h1>
       <div [class]="UI_message_state" *ngIf="UI_message_state !== 'NEUTRAL'">
         {{ UI_message }}

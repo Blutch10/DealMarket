@@ -47,6 +47,14 @@
   display: block;
 }
 
+#sidebar {
+  opacity: 0
+}
+
+#sidebar:hover {
+  opacity: 100;
+}
+
 .form_input {
   margin-left: 37px;
   margin-right: 37px;

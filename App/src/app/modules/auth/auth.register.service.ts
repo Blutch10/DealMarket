@@ -12,7 +12,7 @@ export class RegisterService {
 
     constructor(private http : HttpClient) { }
 
-    register(username_ : string, lastname_ : string, firstname_ : string, email_ : string, password_ : string) : void {
+    register(username_ : string, lastname_ : string, firstname_ : string, email_ : string, password_ : string) : Observable<IBasicResponse> {
         const data = {
             username: username_,
             lastname: lastname_,
@@ -21,9 +21,6 @@ export class RegisterService {
             password: password_
         }
 
-        this.http.put<IBasicResponse>(this.ROOT_URL + '/register', data, { withCredentials: true }).subscribe({
-            next: val => console.log("Account created"),
-            error: err => console.log(err)
-        });
+        return this.http.put<IBasicResponse>(this.ROOT_URL + '/register', data, { withCredentials: true });
     }
 }

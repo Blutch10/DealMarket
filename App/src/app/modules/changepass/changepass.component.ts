@@ -25,23 +25,29 @@ export class ChangePassword implements OnDestroy {
     constructor(private change: changePasswordService, private router: Router) { }
 
     changePassword() : void {
-        this.sub = this.change.changePassword(this.oldPassword, this.newPassword).subscribe({
-            next: val => {
-                this.UI_message = "Password successfully changed";
-                this.UI_message_state = "SUCCESS";
-                setTimeout(() => this.router.navigate(['/dashboard']), 1500);
-            },
-            error: err => {
-                this.UI_message = "Error : Password unchanged";
-                this.UI_message_state = "ERROR";
-            }
-        });
+        if (this.oldPassword === "" || this.newPassword === "") {
+            this.UI_message = "Error : You need to enter a password";
+            this.UI_message_state = "ERROR";
+        }
+        else
+            this.sub = this.change.changePassword(this.oldPassword, this.newPassword).subscribe({
+                next: val => {
+                    this.UI_message = "Password successfully changed";
+                    this.UI_message_state = "SUCCESS";
+                    setTimeout(() => this.router.navigate(['/dashboard']), 1500);
+                },
+                error: err => {
+                    this.UI_message = "Error : Password unchanged";
+                    this.UI_message_state = "ERROR";
+                }
+            });
     }
 
 
     ngOnDestroy()
     {
-        this.sub.unsubscribe();
+        if (this.sub)
+            this.sub.unsubscribe();
     }
 
     

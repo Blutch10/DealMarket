@@ -5,6 +5,9 @@
       <h1 id="title">{{this.authType === 'REGISTER' ? 'Register' : 'Login'}}</h1>
     </div>
 
+    <div *ngIf="UI_Message_state !== 'NEUTRAL'" [class]="UI_Message_state">
+      {{ UI_Message}}
+    </div>
     <mat-form-field class="form_input" appearance="outline">
       <input matInput
         [formControl]="username"

@@ -54,8 +54,8 @@ export class CandlestickComponent implements OnInit, OnDestroy {
   public chartBarOptions: Partial<ChartOptions> | any;
   
   
-  seriesData!: ICandle[]; // The data for the candlestick chart
-  seriesDataLinear!: IVolume[]; // The data for the volume chart
+  seriesData: ICandle[] = []; // The data for the candlestick chart
+  seriesDataLinear: IVolume[] = []; // The data for the volume chart
   sub!: Subscription; // The subscription to the Observable over the server's response (for candles)
   subPrice! : Subscription; // The subscription to the Observable over the server's response (for price)
   symbol = "BTCUSDT"; // The symbol of the current coin
