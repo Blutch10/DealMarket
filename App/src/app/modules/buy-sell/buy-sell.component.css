@@ -6,21 +6,39 @@
     margin-left: 0px;
 }
 
+#button_container {
+  display: flex;
+  flex-direction: row;
+}
+
+#price {
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
 .ERROR {
     background: #fc5a32;
     box-shadow: 1px 1px 1px #aaaaaa;
   }
   
-  .SUCCESS {
+.SUCCESS {
     background: #8dfc32;
     box-shadow: 1px 1px 1px #aaaaaa;
     border: greenyellow solid 1px;
   }
   
-  .ERROR, .SUCCESS {
+.ERROR, .SUCCESS {
     width: fit-content;
     margin-left: 37px;
     margin-bottom: 10px;
     padding-left: 2px;
     padding-right: 2px;
+  }
+
+.Red {
+    color: red;
+  }
+
+.Green {
+    color: green;
   }

@@ -20,8 +20,11 @@ export class BuySell {
     // Parameters passed in the custom tag
     @Input()
     symbol: string = "BTCUSDT";
+    @Input()
+    price: number = 0;
+    @Input()
+    price_state: string = "Green";
 
-    
     constructor(private bs: BuySellService, private refresh: RefreshService) {}
 
     /**

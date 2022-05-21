@@ -221,6 +221,18 @@ fontSize: '12px',
         this.filter = "";
         this.updateSeries();
         this.updateOptions();
+        this.subPrice = this.candle.getPrice(this.symbol).subscribe({
+          next: val => {
+            this.price = val.price;
+            if (this.price >= this.seriesData[this.seriesData.length - 1].y[3]) {       // If instant price is higher than last Close_candle 
+              this.UI_priceStatus = 'Green';                    // we set color UI_price to green
+            }
+            else if (this.price < this.seriesData[this.seriesData.length - 1].y[3]) {   // If instant price is higher than last Close_candle
+              this.UI_priceStatus = 'Red';                      // we set color UI_price to red
+            }
+          },
+          error: err => console.log(err)
+        });
       },
       error: err => console.log(err)
     });
@@ -255,22 +267,23 @@ fontSize: '12px',
         this.seriesData = parsing[0];
         this.seriesDataLinear = parsing[1];
         this.updateSeries();
+        this.subPrice = this.candle.getPrice(this.symbol).subscribe({
+          next: val => {
+            this.price = val.price;
+            if (this.price >= this.seriesData[this.seriesData.length - 1].y[3]) {       // If instant price is higher than last Close_candle 
+              this.UI_priceStatus = 'Green';                    // we set color UI_price to green
+            }
+            else if (this.price < this.seriesData[this.seriesData.length - 1].y[3]) {   // If instant price is higher than last Close_candle
+              this.UI_priceStatus = 'Red';                      // we set color UI_price to red
+            }
+          },
+          error: err => console.log(err)
+        });
       },
       error: err => console.log(err)
     });
 
-    this.subPrice = this.candle.getPrice(this.symbol).subscribe({
-      next: val => {
-        this.price = val.price;
-        if (this.price >= this.seriesData[-1].y[3]) {       // If instant price is higher than last Close_candle 
-          this.UI_priceStatus = 'Green';                    // we set color UI_price to green
-        }
-        else if (this.price < this.seriesData[-1].y[3]) {   // If instant price is higher than last Close_candle
-          this.UI_priceStatus = 'Red';                      // we set color UI_price to red
-        }
-      },
-      error: err => console.log(err)
-    });
+    
   }
 
 
