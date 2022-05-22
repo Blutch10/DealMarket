@@ -295,7 +295,7 @@ class UserDatabase {
                                 if (toPay > balance)
                                     resolve(false);
                                 
-                                if (doc[0].wallet_[symbol_] === undefined) {
+                                else if (doc[0].wallet_[symbol_] === undefined) {
                                     this.logTransaction(userid, "BUY", symbol_, quantity, -toPay)
                                         .then((result) => {
                                             if (result)

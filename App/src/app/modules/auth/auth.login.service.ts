@@ -37,7 +37,7 @@ export class AuthService {
 
 
     logout() : void {
-        this.http.get<IBasicResponse>(this.ROOT_URL + '/logout')
+        this.http.get<IBasicResponse>(this.ROOT_URL + '/logout', { withCredentials: true })
         .subscribe({
             next: (data) => {
                 if (data.status === 200 && data.message === 'Successful logout')

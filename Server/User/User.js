@@ -153,12 +153,14 @@ class User
                                 status: 500,
                                 message: "Internal error"
                             });
-                    });
-                    req.session.userid = val;
-                    res.status(200).json({
-                        status: 200,
-                        message: "Successful authentication"
-                    });
+                        else {
+                            req.session.userid = val;
+                            res.status(200).json({
+                                status: 200,
+                                message: "Successful authentication"
+                            });
+                        }
+                    }); 
                 }
                 else
                 {
